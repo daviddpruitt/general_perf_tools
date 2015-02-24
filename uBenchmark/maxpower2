@@ -1,0 +1,875 @@
+david@darkstar:~/perf/uBenchmark> adb shell
+root@a500:/ # cd /data/arm                                                                                                                                                                      
+root@a500:/data/arm # ./fp                                                                                                                                                                      
+fpmaMain                  fpmaMain-maxPowerL2       fpmaMain-muladd                                                                                                                             
+fpmaMain-add              fpmaMain-maxPowerMain     fpmaMain270                                                                                                                                 
+fpmaMain-maxPower         fpmaMain-mul                                                                                                                                                          
+root@a500:/data/arm # ./fpmaMain-ma                                                                                                                                                             
+fpmaMain-maxPower         fpmaMain-maxPowerL2       fpmaMain-maxPowerMain                                                                                                                       
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                                                                                                                                 
+[1] 1938
+Array pointer 0x400ec008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1135838 instr 1084181 fp instr 2494791 cycles 21529 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10991438 instr 10841504 fp instr 22143773 cycles 69661 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109754682 instr 108414540 fp instr 220724969 cycles 641663 dcache stalls 
+2.19 seconds, 1.08e+09 ops, 4.93151e+08 ops/sec 
+1097278897 instr 1084145470 fp instr 2202884769 cycles 6143300 dcache stalls 
+22.03 seconds, 1.08e+10 ops, 4.90241e+08 ops/sec 
+10972746155 instr 10841449736 fp instr 22026678822 cycles 61220952 dcache stalls 
+x 0.000000
+
+[1] + Done                 ./fpmaMain-maxPowerMain 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                
+[1] 1941
+Array pointer 0x400c7008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1126533 instr 1084181 fp instr 2388380 cycles 14325 dcache stalls 
+0.01 seconds, 1.08e+07 ops, 1.08e+09 ops/sec 
+10991974 instr 10841424 fp instr 22130365 cycles 68695 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109744282 instr 108414676 fp instr 220482898 cycles 617166 dcache stalls 
+2.2 seconds, 1.08e+09 ops, 4.90909e+08 ops/sec 
+1097292101 instr 1084145300 fp instr 2202823920 cycles 6115256 dcache stalls 
+22.03 seconds, 1.08e+10 ops, 4.90241e+08 ops/sec 
+10972694892 instr 10841455532 fp instr 22026964889 cycles 61342232 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                
+[2] 1944
+[1] - Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x400fc008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1131681 instr 1084182 fp instr 2403511 cycles 17057 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10987381 instr 10841459 fp instr 22112574 cycles 65649 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109756824 instr 108414619 fp instr 220496224 cycles 620018 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                
+[1] 1946
+root@a500:/data/arm # Array pointer 0x40091008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1141938 instr 1084177 fp instr 2393613 cycles 22861 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+11001336 instr 10841516 fp instr 22201258 cycles 78248 dcache stalls 
+0.21 seconds, 1.08e+08 ops, 5.14286e+08 ops/sec 
+109772793 instr 108414346 fp instr 220859938 cycles 694044 dcache stalls 
+2.21 seconds, 1.08e+09 ops, 4.88688e+08 ops/sec 
+1097255122 instr 1084140242 fp instr 2206493601 cycles 6443987 dcache stalls 
+2.2 seconds, 1.08e+09 ops, 4.90909e+08 ops/sec 
+1097363206 instr 1084139678 fp instr 2206697967 cycles 6736983 dcache stalls 
+22.06 seconds, 1.08e+10 ops, 4.89574e+08 ops/sec 
+10972175527 instr 10841353568 fp instr 22050415831 cycles 64139067 dcache stalls 
+x 0.000000
+22.07 seconds, 1.08e+10 ops, 4.89352e+08 ops/sec 
+10973460897 instr 10841402307 fp instr 22064644401 cycles 67156761 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                
+[3] 1948
+[1] - Done                 ./fpmaMain-maxPowerMain 
+[2]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x400ed008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1133942 instr 1084185 fp instr 2403608 cycles 19752 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10987927 instr 10841537 fp instr 22116810 cycles 65924 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109742520 instr 108414592 fp instr 220445187 cycles 622639 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain &                                
+[1] 1950
+root@a500:/data/arm # Array pointer 0x40060008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1142075 instr 1084191 fp instr 2393142 cycles 22540 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+11001374 instr 10841491 fp instr 22190253 cycles 77320 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109760361 instr 108414040 fp instr 220768366 cycles 676464 dcache stalls 
+2.21 seconds, 1.08e+09 ops, 4.88688e+08 ops/sec 
+1097251889 instr 1084139806 fp instr 2206051904 cycles 6397442 dcache stalls 
+2.22 seconds, 1.08e+09 ops, 4.86486e+08 ops/sec 
+1097369270 instr 1084134900 fp instr 2206262326 cycles 6723109 dcache stalls 
+22.06 seconds, 1.08e+10 ops, 4.89574e+08 ops/sec 
+10972232370 instr 10841380338 fp instr 22051689041 cycles 64289170 dcache stalls 
+x 0.000000
+22.06 seconds, 1.08e+10 ops, 4.89574e+08 ops/sec 
+10973408812 instr 10841380127 fp instr 22060271053 cycles 66972052 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 1954
+[1] - Done                 ./fpmaMain-maxPowerMain 
+[3]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40097008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1132497 instr 1084225 fp instr 2402656 cycles 25837 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10973965 instr 10841448 fp instr 22090647 cycles 171752 dcache stalls 
+0.21 seconds, 1.08e+08 ops, 5.14286e+08 ops/sec 
+109609364 instr 108415312 fp instr 220399162 cycles 1643139 dcache stalls 
+2.19 seconds, 1.08e+09 ops, 4.93151e+08 ops/sec 
+1095922074 instr 1084181462 fp instr 2201339182 cycles 15891368 dcache stalls 
+22.02 seconds, 1.08e+10 ops, 4.90463e+08 ops/sec 
+10959033311 instr 10841832197 fp instr 22011043889 cycles 157112532 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 1958
+[2] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400c0008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1124740 instr 1084153 fp instr 2350481 cycles 23412 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10974711 instr 10842056 fp instr 22099862 cycles 170989 dcache stalls 
+0.21 seconds, 1.08e+08 ops, 5.14286e+08 ops/sec 
+109603948 instr 108418855 fp instr 220376415 cycles 1639116 dcache stalls 
+2.19 seconds, 1.08e+09 ops, 4.93151e+08 ops/sec 
+1095923966 instr 1084188464 fp instr 2201193298 cycles 15823442 dcache stalls 
+22.02 seconds, 1.08e+10 ops, 4.90463e+08 ops/sec 
+10959084375 instr 10841920870 fp instr 22008791208 cycles 156484306 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 1968
+[1] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40035008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1131109 instr 1084117 fp instr 2371470 cycles 27382 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10974683 instr 10841310 fp instr 22093132 cycles 171630 dcache stalls 
+0.21 seconds, 1.08e+08 ops, 5.14286e+08 ops/sec 
+109602350 instr 108415083 fp instr 220393530 cycles 1642796 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 1970
+root@a500:/data/arm # Array pointer 0x40020008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1140089 instr 1084086 fp instr 2382435 cycles 30331 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10987225 instr 10841630 fp instr 22164434 cycles 185211 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109622199 instr 108416252 fp instr 220583847 cycles 1711492 dcache stalls 
+2.19 seconds, 1.08e+09 ops, 4.93151e+08 ops/sec 
+1095886217 instr 1084173802 fp instr 2203552661 cycles 16699442 dcache stalls 
+2.2 seconds, 1.08e+09 ops, 4.90909e+08 ops/sec 
+1096198397 instr 1084193530 fp instr 2204821361 cycles 16865006 dcache stalls 
+22.05 seconds, 1.08e+10 ops, 4.89796e+08 ops/sec 
+10958807528 instr 10841709250 fp instr 22037882523 cycles 167805855 dcache stalls 
+x 0.000000
+22.07 seconds, 1.08e+10 ops, 4.89352e+08 ops/sec 
+10961441832 instr 10841915584 fp instr 22044232456 cycles 167165068 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[3] 1973
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[2]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40093008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1124785 instr 1084147 fp instr 2347970 cycles 22395 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+10982394 instr 10842056 fp instr 22123661 cycles 176329 dcache stalls 
+0.22 seconds, 1.08e+08 ops, 4.90909e+08 ops/sec 
+109603263 instr 108416013 fp instr 220399836 cycles 1650142 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 1975
+root@a500:/data/arm # Array pointer 0x40003008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1140153 instr 1084167 fp instr 2381087 cycles 30745 dcache stalls 
+0.01 seconds, 1.08e+07 ops, 1.08e+09 ops/sec 
+10992301 instr 10842023 fp instr 22202093 cycles 191276 dcache stalls 
+0.21 seconds, 1.08e+08 ops, 5.14286e+08 ops/sec 
+109623572 instr 108418376 fp instr 220609611 cycles 1714230 dcache stalls 
+2.2 seconds, 1.08e+09 ops, 4.90909e+08 ops/sec 
+1095873643 instr 1084167304 fp instr 2203423683 cycles 16728591 dcache stalls 
+2.2 seconds, 1.08e+09 ops, 4.90909e+08 ops/sec 
+1095986156 instr 1084187118 fp instr 2203980689 cycles 16818159 dcache stalls 
+22.05 seconds, 1.08e+10 ops, 4.89796e+08 ops/sec 
+10958819816 instr 10841667316 fp instr 22035419055 cycles 167680981 dcache stalls 
+x 0.000000
+22.06 seconds, 1.08e+10 ops, 4.89574e+08 ops/sec 
+10960062257 instr 10841887784 fp instr 22039257539 cycles 166925070 dcache stalls 
+x 0.000000
+
+[1] + Done                 ./fpmaMain-maxPowerL2 
+[3] - Done                 ./fpmaMain-maxPowerL2 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 1990
+Array pointer 0x4009e008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1233726 instr 1092607 fp instr 3505032 cycles 284114 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11799876 instr 10925789 fp instr 30351590 cycles 2476045 dcache stalls 
+0.3 seconds, 1.08e+08 ops, 3.6e+08 ops/sec 
+117703114 instr 109257967 fp instr 300566952 cycles 24373764 dcache stalls 
+3 seconds, 1.08e+09 ops, 3.6e+08 ops/sec 
+1176745446 instr 1092559284 fp instr 3002886928 cycles 243496743 dcache stalls 
+30.07 seconds, 1.08e+10 ops, 3.59162e+08 ops/sec 
+11768545572 instr 10925586494 fp instr 30056158036 cycles 2437685827 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[2] 1993
+[1] - Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x400dc008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1235455 instr 1092480 fp instr 3463089 cycles 290368 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11801082 instr 10925943 fp instr 30285256 cycles 2487664 dcache stalls 
+0.3 seconds, 1.08e+08 ops, 3.6e+08 ops/sec 
+117707485 instr 109256739 fp instr 300045891 cycles 24415981 dcache stalls 
+2.99 seconds, 1.08e+09 ops, 3.61204e+08 ops/sec 
+1176780974 instr 1092571939 fp instr 2997728416 cycles 244164620 dcache stalls 
+29.99 seconds, 1.08e+10 ops, 3.6012e+08 ops/sec 
+11767609419 instr 10925744256 fp instr 29981838581 cycles 2441787674 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 1995
+[2] - Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40002008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1223024 instr 1092413 fp instr 3400005 cycles 276627 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11797768 instr 10925734 fp instr 30330135 cycles 2481009 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &0.3 seconds, 1.08e+08 ops, 3.6e+08 ops/sec 
+117747871 instr 109257320 fp instr 300457810 cycles 24413491 dcache stalls 
+
+[2] 1997
+Array pointer 0x40044008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1209948 instr 1092304 fp instr 3437459 cycles 284485 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11776116 instr 10924882 fp instr 31769986 cycles 2848231 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+117641204 instr 109246374 fp instr 315544615 cycles 28532828 dcache stalls 
+3.15 seconds, 1.08e+09 ops, 3.42857e+08 ops/sec 
+1176834416 instr 1092469067 fp instr 3148318407 cycles 284226995 dcache stalls 
+3.15 seconds, 1.08e+09 ops, 3.42857e+08 ops/sec 
+1176234674 instr 1092462536 fp instr 3151907468 cycles 284654093 dcache stalls 
+31.58 seconds, 1.08e+10 ops, 3.41989e+08 ops/sec 
+11767119920 instr 10924561368 fp instr 31540600167 cycles 2836466569 dcache stalls 
+x 0.000000
+31.52 seconds, 1.08e+10 ops, 3.4264e+08 ops/sec 
+11762679649 instr 10924648580 fp instr 31494246253 cycles 2840145221 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[3] 2002
+[2] - Done                 ./fpmaMain-maxPowerMain 
+[1]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40023008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1214041 instr 1092620 fp instr 3376214 cycles 278344 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11781250 instr 10925764 fp instr 30174202 cycles 2476723 dcache stalls 
+0.3 seconds, 1.08e+08 ops, 3.6e+08 ops/sec 
+117685242 instr 109258337 fp instr 299634995 cycles 24368438 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 2004
+root@a500:/data/arm # Array pointer 0x4007c008
+x=0.000000 size=10485760 stride=525000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1223282 instr 1092321 fp instr 3500023 cycles 295619 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11807916 instr 10924524 fp instr 31881010 cycles 2894424 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+117682941 instr 109246377 fp instr 315426000 cycles 28693103 dcache stalls 
+3.13 seconds, 1.08e+09 ops, 3.45048e+08 ops/sec 
+1176482131 instr 1092491034 fp instr 3131364856 cycles 281048446 dcache stalls 
+3.15 seconds, 1.08e+09 ops, 3.42857e+08 ops/sec 
+1176544203 instr 1092463813 fp instr 3150060149 cycles 285696860 dcache stalls 
+31.52 seconds, 1.08e+10 ops, 3.4264e+08 ops/sec 
+11764039610 instr 10924616559 fp instr 31485713833 cycles 2830972125 dcache stalls 
+x 0.000000
+31.47 seconds, 1.08e+10 ops, 3.43184e+08 ops/sec 
+11765381475 instr 10924656323 fp instr 31447371576 cycles 2840722255 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2007
+[1] - Done                 ./fpmaMain-maxPowerMain 
+[3]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40063008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1181661 instr 1094523 fp instr 2918499 cycles 342262 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+11486277 instr 10944830 fp instr 26615447 cycles 2925205 dcache stalls 
+0.26 seconds, 1.08e+08 ops, 4.15385e+08 ops/sec 
+114695086 instr 109448096 fp instr 263953191 cycles 28204545 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2009
+root@a500:/data/arm # Array pointer 0x4003b008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1192588 instr 1094479 fp instr 2953042 cycles 338798 dcache stalls 
+0.01 seconds, 1.08e+07 ops, 1.08e+09 ops/sec 
+11496392 instr 10944205 fp instr 27990265 cycles 3812681 dcache stalls 
+0.28 seconds, 1.08e+08 ops, 3.85714e+08 ops/sec 
+114691958 instr 109441283 fp instr 282826866 cycles 41852920 dcache stalls 
+2.78 seconds, 1.08e+09 ops, 3.88489e+08 ops/sec 
+1146853580 instr 1094424124 fp instr 2782160685 cycles 387937274 dcache stalls 
+2.82 seconds, 1.08e+09 ops, 3.82979e+08 ops/sec 
+1148339131 instr 1094420064 fp instr 2826398125 cycles 408827918 dcache stalls 
+28.23 seconds, 1.08e+10 ops, 3.82572e+08 ops/sec 
+11464444720 instr 10944066828 fp instr 28199382307 cycles 18446744073615921620 dcache stalls 
+x 0.000000
+28.17 seconds, 1.08e+10 ops, 3.83387e+08 ops/sec 
+11466227903 instr 10944190105 fp instr 28153932608 cycles 4089281616 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[3] 2013
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[2]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40074008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1181558 instr 1094510 fp instr 2913546 cycles 317390 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+11483644 instr 10945028 fp instr 26720821 cycles 2706011 dcache stalls 
+0.26 seconds, 1.08e+08 ops, 4.15385e+08 ops/sec 
+114728528 instr 109449400 fp instr 265428791 cycles 26275172 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2015
+root@a500:/data/arm # Array pointer 0x40071008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1196885 instr 1094456 fp instr 3047122 cycles 397061 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+11495555 instr 10944236 fp instr 28248779 cycles 3996086 dcache stalls 
+0.27 seconds, 1.08e+08 ops, 4e+08 ops/sec 
+114695206 instr 109442681 fp instr 276862668 cycles 36890038 dcache stalls 
+2.75 seconds, 1.08e+09 ops, 3.92727e+08 ops/sec 
+1146838606 instr 1094455911 fp instr 2753433185 cycles 331511742 dcache stalls 
+2.77 seconds, 1.08e+09 ops, 3.89892e+08 ops/sec 
+1146724631 instr 1094428818 fp instr 2768499178 cycles 369427277 dcache stalls 
+27.78 seconds, 1.08e+10 ops, 3.88769e+08 ops/sec 
+11467496365 instr 10944458637 fp instr 27761900970 cycles 3477954754 dcache stalls 
+x 0.000000
+27.7 seconds, 1.08e+10 ops, 3.89892e+08 ops/sec 
+11467261830 instr 10944299355 fp instr 27666677514 cycles 3681751478 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2025
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[3]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x4005c008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1176983 instr 1094459 fp instr 2880043 cycles 353420 dcache stalls 
+0.01 seconds, 1.08e+07 ops, 1.08e+09 ops/sec 
+11489116 instr 10944584 fp instr 26635015 cycles 2960239 dcache stalls 
+0.26 seconds, 1.08e+08 ops, 4.15385e+08 ops/sec 
+114699842 instr 109446925 fp instr 264130055 cycles 28463430 dcache stalls 
+2.63 seconds, 1.08e+09 ops, 4.10646e+08 ops/sec 
+1146816164 instr 1094472922 fp instr 2638921573 cycles 283321433 dcache stalls 
+26.42 seconds, 1.08e+10 ops, 4.08781e+08 ops/sec 
+11468057946 instr 10944708448 fp instr 26404676619 cycles 2841823344 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2098
+[2] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40038008
+x=0.000000 size=1048576 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+1177407 instr 1094561 fp instr 2894487 cycles 316374 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+11494280 instr 10944904 fp instr 26815725 cycles 2712585 dcache stalls 
+0.26 seconds, 1.08e+08 ops, 4.15385e+08 ops/sec 
+114724418 instr 109449051 fp instr 265854461 cycles 26054959 dcache stalls 
+2.65 seconds, 1.08e+09 ops, 4.07547e+08 ops/sec 
+1147151700 instr 1094489848 fp instr 2656780744 cycles 259472252 dcache stalls 
+26.57 seconds, 1.08e+10 ops, 4.06473e+08 ops/sec 
+11471344561 instr 10944902064 fp instr 26568605261 cycles 2595514423 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2112
+[1] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400e8008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3460080 instr 2158757 fp instr 7224803 cycles 1688563 dcache stalls 
+0.05 seconds, 1.08e+07 ops, 2.16e+08 ops/sec 
+34559624 instr 21693537 fp instr 56160353 cycles 9170811 dcache stalls 
+0.55 seconds, 1.08e+08 ops, 1.96364e+08 ops/sec 
+345581070 instr 217056958 fp instr 548031200 cycles 83857446 dcache stalls 
+5.52 seconds, 1.08e+09 ops, 1.95652e+08 ops/sec 
+3455554106 instr 2170301976 fp instr 5523267424 cycles 859780314 dcache stalls 
+54.82 seconds, 1.08e+10 ops, 1.97008e+08 ops/sec 
+25968148821 instr 21706104488 fp instr 54793849037 cycles 8377869112 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2117
+[2] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40003008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3440933 instr 2158706 fp instr 6993806 cycles 1645510 dcache stalls 
+0.05 seconds, 1.08e+07 ops, 2.16e+08 ops/sec 
+34556807 instr 21685020 fp instr 57150929 cycles 9653999 dcache stalls 
+0.56 seconds, 1.08e+08 ops, 1.92857e+08 ops/sec 
+345474894 instr 216963884 fp instr 559468081 cycles 89758029 dcache stalls 
+5.6 seconds, 1.08e+09 ops, 1.92857e+08 ops/sec 
+3454735215 instr 2169676413 fp instr 5590395054 cycles 895456005 dcache stalls 
+55.96 seconds, 1.08e+10 ops, 1.92995e+08 ops/sec 
+34547046639 instr 21696605065 fp instr 55930703076 cycles 8966474051 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2121
+[1] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x4008a008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3440465 instr 2158729 fp instr 7015308 cycles 1649426 dcache stalls 
+0.04 seconds, 1.08e+07 ops, 2.7e+08 ops/sec 
+34550114 instr 21681257 fp instr 57625148 cycles 9829478 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &0.57 seconds, 1.08e+08 ops, 1.89474e+08 ops/sec 
+345439185 instr 216916790 fp instr 565215549 cycles 92580581 dcache stalls 
+
+[1] 2123
+Array pointer 0x400a7008
+root@a500:/data/arm # x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3450818 instr 2153185 fp instr 7859040 cycles 2120499 dcache stalls 
+0.07 seconds, 1.08e+07 ops, 1.54286e+08 ops/sec 
+34449660 instr 21575368 fp instr 72542807 cycles 17591525 dcache stalls 
+0.72 seconds, 1.08e+08 ops, 1.5e+08 ops/sec 
+344231042 instr 215790350 fp instr 721162890 cycles 173954033 dcache stalls 
+7.19 seconds, 1.08e+09 ops, 1.50209e+08 ops/sec 
+3441593168 instr 2157797923 fp instr 7193249619 cycles 1731896258 dcache stalls 
+7.22 seconds, 1.08e+09 ops, 1.49584e+08 ops/sec 
+3442145591 instr 2157879674 fp instr 7214210964 cycles 1740259146 dcache stalls 
+72.13 seconds, 1.08e+10 ops, 1.4973e+08 ops/sec 
+34413728773 instr 21576710349 fp instr 72060073167 cycles 17396824343 dcache stalls 
+x 0.000000
+71.89 seconds, 1.08e+10 ops, 1.5023e+08 ops/sec 
+30126687073 instr 17286229927 fp instr 71825144096 cycles 17223664097 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[3] 2131
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[2]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40035008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3456741 instr 2158444 fp instr 7084020 cycles 1665359 dcache stalls 
+0.05 seconds, 1.08e+07 ops, 2.16e+08 ops/sec 
+34560538 instr 21688878 fp instr 56588738 cycles 9335436 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &0.55 seconds, 1.08e+08 ops, 1.96364e+08 ops/sec 
+345547995 instr 217004210 fp instr 554331744 cycles 86839600 dcache stalls 
+
+[1] 2133
+root@a500:/data/arm # Array pointer 0x4004c008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3451454 instr 2153027 fp instr 7816892 cycles 2107879 dcache stalls 
+0.07 seconds, 1.08e+07 ops, 1.54286e+08 ops/sec 
+34443049 instr 21571890 fp instr 72310741 cycles 17560595 dcache stalls 
+0.71 seconds, 1.08e+08 ops, 1.52113e+08 ops/sec 
+344210033 instr 215770281 fp instr 719152853 cycles 173654452 dcache stalls 
+7.15 seconds, 1.08e+09 ops, 1.51049e+08 ops/sec 
+3441602833 instr 2157802728 fp instr 7152276616 cycles 1724257142 dcache stalls 
+7.18 seconds, 1.08e+09 ops, 1.50418e+08 ops/sec 
+3441971293 instr 2157737920 fp instr 7190491073 cycles 1735390026 dcache stalls 
+71.82 seconds, 1.08e+10 ops, 1.50376e+08 ops/sec 
+25825781079 instr 17280645268 fp instr 71766661512 cycles 17389832477 dcache stalls 
+x 0.000000
+71.65 seconds, 1.08e+10 ops, 1.50733e+08 ops/sec 
+30126849639 instr 17284636406 fp instr 71570846950 cycles 17176934658 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[2] 2136
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[3]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400ca008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3517869 instr 2147862 fp instr 8886534 cycles 2566958 dcache stalls 
+0.08 seconds, 1.08e+07 ops, 1.35e+08 ops/sec 
+39493531 instr 21486526 fp instr 85799242 cycles 23868967 dcache stalls 
+0.91 seconds, 1.08e+08 ops, 1.18681e+08 ops/sec 
+449725100 instr 214763227 fp instr 912637066 cycles 240369298 dcache stalls 
+9.73 seconds, 1.08e+09 ops, 1.10997e+08 ops/sec 
+5006242698 instr 2146451253 fp instr 9734001601 cycles 2437505482 dcache stalls 
+103.45 seconds, 1.08e+10 ops, 1.04398e+08 ops/sec 
+40267365602 instr 21452156016 fp instr 103392311184 cycles 23987649250 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 2139
+[2] - Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x400b1008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3508746 instr 2147642 fp instr 8826336 cycles 2573616 dcache stalls 
+0.07 seconds, 1.08e+07 ops, 1.54286e+08 ops/sec 
+39483305 instr 21488289 fp instr 85757135 cycles 23861087 dcache stalls 
+0.91 seconds, 1.08e+08 ops, 1.18681e+08 ops/sec 
+449733208 instr 214767798 fp instr 912199209 cycles 240383031 dcache stalls 
+9.74 seconds, 1.08e+09 ops, 1.10883e+08 ops/sec 
+5006226179 instr 2146482408 fp instr 9735504856 cycles 2440354032 dcache stalls 
+103.39 seconds, 1.08e+10 ops, 1.04459e+08 ops/sec 
+48854880471 instr 21452593580 fp instr 103334498184 cycles 23988162924 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[2] 2145
+[1] - Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40027008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0.01 seconds, 1.08e+06 ops, 1.08e+08 ops/sec 
+3513785 instr 2148005 fp instr 8953109 cycles 2564168 dcache stalls 
+0.08 seconds, 1.08e+07 ops, 1.35e+08 ops/sec 
+39496465 instr 21490264 fp instr 87114380 cycles 23810090 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 2147
+root@a500:/data/arm # Array pointer 0x400e8008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3521845 instr 2147070 fp instr 9341865 cycles 2810459 dcache stalls 
+0.09 seconds, 1.08e+07 ops, 1.2e+08 ops/sec 
+39487317 instr 21475457 fp instr 92648926 cycles 27089633 dcache stalls 
+0.95 seconds, 1.08e+08 ops, 1.13684e+08 ops/sec 
+449761838 instr 214748184 fp instr 947291341 cycles 251239937 dcache stalls 
+0.98 seconds, 1.08e+08 ops, 1.10204e+08 ops/sec 
+449562750 instr 214701321 fp instr 983537736 cycles 271538218 dcache stalls 
+10.49 seconds, 1.08e+09 ops, 1.02955e+08 ops/sec 
+5001426992 instr 2143914884 fp instr 10488622625 cycles 2840852068 dcache stalls 
+10.47 seconds, 1.08e+09 ops, 1.03152e+08 ops/sec 
+709886602 instr 2146573982 fp instr 10464108847 cycles 2728274070 dcache stalls 
+110.81 seconds, 1.08e+10 ops, 9.74641e+07 ops/sec 
+48809713541 instr 17143065928 fp instr 110692992778 cycles 23350304500 dcache stalls 
+x 0.000000
+110.2 seconds, 1.08e+10 ops, 9.80036e+07 ops/sec 
+53137444306 instr 17160696139 fp instr 110104673156 cycles 26867629714 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[3] 2154
+[1] - Done                 ./fpmaMain-maxPowerMain 
+[2]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40064008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+3511761 instr 2147939 fp instr 8860751 cycles 2561563 dcache stalls 
+0.08 seconds, 1.08e+07 ops, 1.35e+08 ops/sec 
+39499551 instr 21488171 fp instr 86226794 cycles 23894071 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerMain  &                               
+[1] 2156
+root@a500:/data/arm # Array pointer 0x400fe008
+x=0.000000 size=1310720 stride=525000 stride_Adj=4
+After Loop
+x 0.000000
+0.01 seconds, 1.08e+06 ops, 1.08e+08 ops/sec 
+3521669 instr 2147144 fp instr 9354875 cycles 2798249 dcache stalls 
+0.09 seconds, 1.08e+07 ops, 1.2e+08 ops/sec 
+39489061 instr 21476929 fp instr 92742065 cycles 27123546 dcache stalls 
+0.93 seconds, 1.08e+08 ops, 1.16129e+08 ops/sec 
+449714890 instr 214741220 fp instr 934641931 cycles 250086877 dcache stalls 
+0.98 seconds, 1.08e+08 ops, 1.10204e+08 ops/sec 
+449542244 instr 214673573 fp instr 982728114 cycles 273112739 dcache stalls 
+10.52 seconds, 1.08e+09 ops, 1.02662e+08 ops/sec 
+5007027204 instr 2145392159 fp instr 10500587709 cycles 2813197001 dcache stalls 
+10.38 seconds, 1.08e+09 ops, 1.04046e+08 ops/sec 
+5036670825 instr 2146084889 fp instr 10675804603 cycles 2822380257 dcache stalls 
+110.11 seconds, 1.08e+10 ops, 9.80837e+07 ops/sec 
+53112484391 instr 17150275550 fp instr 109993133722 cycles 27428975199 dcache stalls 
+x 0.000000
+109.97 seconds, 1.08e+10 ops, 9.82086e+07 ops/sec 
+44538520687 instr 21452626905 fp instr 109865063747 cycles 27025022742 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2169
+[1] - Done                 ./fpmaMain-maxPowerMain 
+[3]   Done                 ./fpmaMain-maxPowerMain 
+Array pointer 0x40030008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2353786 instr 2096367 fp instr 4111246 cycles 244923 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+23224247 instr 21005846 fp instr 35454812 cycles 1426763 dcache stalls 
+0.34 seconds, 1.08e+08 ops, 3.17647e+08 ops/sec 
+232424393 instr 210221578 fp instr 348144383 cycles 11167798 dcache stalls 
+3.44 seconds, 1.08e+09 ops, 3.13953e+08 ops/sec 
+2324483291 instr 2102856403 fp instr 3443391418 cycles 98187868 dcache stalls 
+34.45 seconds, 1.08e+10 ops, 3.13498e+08 ops/sec 
+23244697043 instr 21028612386 fp instr 34434020769 cycles 981438367 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2175
+[2] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x4003b008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2336714 instr 2096088 fp instr 4013880 cycles 237717 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+23236251 instr 21005188 fp instr 35581497 cycles 1462020 dcache stalls 
+0.34 seconds, 1.08e+08 ops, 3.17647e+08 ops/sec 
+232428466 instr 210238508 fp instr 346935324 cycles 10782010 dcache stalls 
+3.45 seconds, 1.08e+09 ops, 3.13043e+08 ops/sec 
+2324230602 instr 2102562207 fp instr 3460815120 cycles 104081417 dcache stalls 
+34.7 seconds, 1.08e+10 ops, 3.11239e+08 ops/sec 
+23242889969 instr 16729574522 fp instr 34695417184 cycles 1066376050 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2184
+[1] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400ae008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2349568 instr 2096420 fp instr 4026114 cycles 239158 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+23225469 instr 21005128 fp instr 35416559 cycles 1435166 dcache stalls 
+0.34 seconds, 1.08e+08 ops, 3.17647e+08 ops/sec 
+232418811 instr 210232476 fp instr 346146933 cycles 10897160 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2186
+root@a500:/data/arm # Array pointer 0x40069008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2354718 instr 2096291 fp instr 4136891 cycles 276410 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+23221982 instr 20986158 fp instr 37889912 cycles 2059977 dcache stalls 
+0.37 seconds, 1.08e+08 ops, 2.91892e+08 ops/sec 
+232124395 instr 209931256 fp instr 375864594 cycles 19126023 dcache stalls 
+3.7 seconds, 1.08e+09 ops, 2.91892e+08 ops/sec 
+2321523255 instr 2099925657 fp instr 3710204813 cycles 174223251 dcache stalls 
+3.75 seconds, 1.08e+09 ops, 2.88e+08 ops/sec 
+2321030208 instr 2099292764 fp instr 3757441806 cycles 190851435 dcache stalls 
+37.59 seconds, 1.08e+10 ops, 2.8731e+08 ops/sec 
+23210525517 instr 20994496086 fp instr 37562243859 cycles 1867758668 dcache stalls 
+x 0.000000
+37.52 seconds, 1.08e+10 ops, 2.87846e+08 ops/sec 
+23211132025 instr 16698706123 fp instr 37498970452 cycles 1886948512 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[3] 2201
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[2]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400f6008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2351785 instr 2096140 fp instr 4078969 cycles 240535 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+23249885 instr 21004041 fp instr 35721067 cycles 1484052 dcache stalls 
+0.35 seconds, 1.08e+08 ops, 3.08571e+08 ops/sec 
+232437541 instr 210222732 fp instr 347826212 cycles 11109721 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2203
+Array pointer 0x400d2008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+root@a500:/data/arm # 0 seconds, 1.08e+06 ops, inf ops/sec 
+2352869 instr 2096452 fp instr 4263009 cycles 272562 dcache stalls 
+0.04 seconds, 1.08e+07 ops, 2.7e+08 ops/sec 
+23206441 instr 20988202 fp instr 37922668 cycles 2018723 dcache stalls 
+0.37 seconds, 1.08e+08 ops, 2.91892e+08 ops/sec 
+232097640 instr 209949269 fp instr 376008107 cycles 18667472 dcache stalls 
+3.72 seconds, 1.08e+09 ops, 2.90323e+08 ops/sec 
+2321686761 instr 2099621118 fp instr 3725749504 cycles 181205729 dcache stalls 
+3.76 seconds, 1.08e+09 ops, 2.87234e+08 ops/sec 
+2320920694 instr 2099537870 fp instr 3759220123 cycles 185951507 dcache stalls 
+37.63 seconds, 1.08e+10 ops, 2.87005e+08 ops/sec 
+18916689231 instr 20992517052 fp instr 37608185866 cycles 1913454448 dcache stalls 
+x 0.000000
+37.55 seconds, 1.08e+10 ops, 2.87617e+08 ops/sec 
+23209824894 instr 16701056641 fp instr 37524135242 cycles 1840732826 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2236
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[3]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x400bf008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2176904 instr 2092366 fp instr 3561796 cycles 29327 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+21159396 instr 20922624 fp instr 31845883 cycles 177171 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+211668834 instr 209257515 fp instr 317199723 cycles 1213009 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2238
+root@a500:/data/arm # Array pointer 0x400e5008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2173675 instr 2092378 fp instr 3519051 cycles 28781 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+21175402 instr 20923154 fp instr 33025663 cycles 192625 dcache stalls 
+0.32 seconds, 1.08e+08 ops, 3.375e+08 ops/sec 
+211677687 instr 209239275 fp instr 328708912 cycles 1579043 dcache stalls 
+3.27 seconds, 1.08e+09 ops, 3.30275e+08 ops/sec 
+2116860018 instr 2092451126 fp instr 3265922999 cycles 14568997 dcache stalls 
+3.28 seconds, 1.08e+09 ops, 3.29268e+08 ops/sec 
+2116997379 instr 2092433545 fp instr 3284105798 cycles 15215468 dcache stalls 
+32.86 seconds, 1.08e+10 ops, 3.28667e+08 ops/sec 
+21168063471 instr 20924187569 fp instr 32847637847 cycles 151984077 dcache stalls 
+x 0.000000
+32.84 seconds, 1.08e+10 ops, 3.28867e+08 ops/sec 
+12580193011 instr 20924390570 fp instr 32816474150 cycles 150090316 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[3] 2241
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[2]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40005008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2159079 instr 2092398 fp instr 3433030 cycles 21708 dcache stalls 
+0.02 seconds, 1.08e+07 ops, 5.4e+08 ops/sec 
+21160652 instr 20922642 fp instr 31851323 cycles 179671 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+211665988 instr 209257909 fp instr 317173203 cycles 1195883 dcache stalls 
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2243
+root@a500:/data/arm # Array pointer 0x40009008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2176626 instr 2092323 fp instr 3540567 cycles 34664 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+21172688 instr 20922802 fp instr 32984226 cycles 194094 dcache stalls 
+0.32 seconds, 1.08e+08 ops, 3.375e+08 ops/sec 
+211684148 instr 209239033 fp instr 328695574 cycles 1585257 dcache stalls 
+3.28 seconds, 1.08e+09 ops, 3.29268e+08 ops/sec 
+2116842888 instr 2092446147 fp instr 3274384067 cycles 14659202 dcache stalls 
+3.28 seconds, 1.08e+09 ops, 3.29268e+08 ops/sec 
+2116972203 instr 2092426688 fp instr 3286416361 cycles 15305088 dcache stalls 
+32.87 seconds, 1.08e+10 ops, 3.28567e+08 ops/sec 
+21168062591 instr 20924281355 fp instr 32851354305 cycles 150023066 dcache stalls 
+x 0.000000
+32.86 seconds, 1.08e+10 ops, 3.28667e+08 ops/sec 
+21169875504 instr 20924336508 fp instr 32827454445 cycles 151604421 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[2] 2245
+[1] - Done                 ./fpmaMain-maxPowerL2 
+[3]   Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40098008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2159110 instr 2092373 fp instr 3439976 cycles 21857 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+21158088 instr 20922526 fp instr 31845972 cycles 178875 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+211663471 instr 209257927 fp instr 317175357 cycles 1200203 dcache stalls 
+3.17 seconds, 1.08e+09 ops, 3.40694e+08 ops/sec 
+2116973187 instr 2092662454 fp instr 3168582460 cycles 9726947 dcache stalls 
+31.68 seconds, 1.08e+10 ops, 3.40909e+08 ops/sec 
+21169810674 instr 20926839987 fp instr 31673208454 cycles 89955137 dcache stalls 
+x 0.000000
+root@a500:/data/arm # ./fpmaMain-maxPowerL2  &                                 
+[1] 2249
+[2] - Done                 ./fpmaMain-maxPowerL2 
+Array pointer 0x40022008
+x=0.000000 size=131072 stride=65000 stride_Adj=4
+root@a500:/data/arm # After Loop
+x 0.000000
+0 seconds, 1.08e+06 ops, inf ops/sec 
+2159003 instr 2092396 fp instr 3444916 cycles 20416 dcache stalls 
+0.03 seconds, 1.08e+07 ops, 3.6e+08 ops/sec 
+21166707 instr 20923186 fp instr 31846074 cycles 166746 dcache stalls 
+0.31 seconds, 1.08e+08 ops, 3.48387e+08 ops/sec 
+211670609 instr 209258745 fp instr 317147945 cycles 1164064 dcache stalls 
+3.16 seconds, 1.08e+09 ops, 3.41772e+08 ops/sec 
+2116999866 instr 2092685642 fp instr 3167092779 cycles 8973217 dcache stalls 
+31.68 seconds, 1.08e+10 ops, 3.40909e+08 ops/sec 
+21169867530 instr 20926871640 fp instr 31671775451 cycles 88919841 dcache stalls 
+x 0.000000
+
+
