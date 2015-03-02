@@ -102,6 +102,7 @@ int read_stats(struct net_event ***devices)
   struct net_event **dev_list;
   char buffer[256];
   char extra[256];
+  char stream_buff[1536];
   char single[1];
   uint64_t unused[16];
   int i;
@@ -109,9 +110,10 @@ int read_stats(struct net_event ***devices)
   dev_list = *devices;
   net_stats_file = fopen(NET_STATS_FILE, "rt");
   if(!net_stats_file) {
-    fprintf(stderr, "Unable to openfile: %s\n", strerror(errno));
     return 1;
   }
+  
+  setvbuf(net_stats_file, stream_buff, _IOLBF, 1536);
 
   // first two lines are headers
   fgets(buffer, 256, net_stats_file);
@@ -157,7 +159,6 @@ int read_stats(struct net_event ***devices)
   net_stats_file = fopen(NET_STATS_FILE, "r");
 
   if(!net_stats_file) {
-    //fprintf(stderr, "Unable to openfile: %s\n", strerror(errno));
     return 1;
   }
 
