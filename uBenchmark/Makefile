@@ -1,12 +1,13 @@
 ARM_CC=arm-linux-gnueabi-gcc 
-ARM_CFLAGS=-static -fomit-frame-pointer -march=armv7-a -mtune=cortex-a9 -mfpu=vfpv3-d16 -mfloat-abi=softfp -O3 -funroll-loops -W -Wall 
+ARM_CFLAGS=-fomit-frame-pointer -O3 -funroll-loops -W -Wall -march=armv7-a -mtune=cortex-a9 -mfpu=vfpv3-d16 -mfloat-abi=softfp -static
 X64_CC=gcc
-X64_CFLAGS=-fomit-frame-pointer -march=bdver2  -mtune=bdver2    -mfpmath=both                      -O3 -funroll-loops -W -Wall
+X64_CFLAGS=-fomit-frame-pointer -O3 -funroll-loops -W -Wall -march=bdver2 -mtune=bdver2 -mfpmath=both
 
-CFLAGS=$(ARM_CFLAGS)
-CC=$(ARM_CC)
+CFLAGS=$(X64_CFLAGS) -DBTYPE=float
+CC=$(X64_CC)
 LDFLAGS=$(CFLAGS)
-COMMONOBJ=doMany.o utility.o PerfCounts.o
+HAZARD_LENGTH=16
+COMMONOBJ=utility.o PerfCounts.o
 
 MULADD=1
 ADD=2
@@ -20,12 +21,20 @@ L2SIZE=1048576
 MAXSIZE=10485760
 CACHELINE=4	#size (in doubles) of a cacheline
 
-fpmaMain-add: fpmaMain-add.o $(COMMONOBJ) 
+fpmaMain-add: fpmaMain-add.o doMany2.o $(COMMONOBJ) 
 	$(CC) $(LDFLAGS) -o $@ $^ 
-fpmaMain-muladd: fpmaMain-muladd.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(COMMONOBJ)
-fpmaMain-mul: fpmaMain-mul.o $(COMMONOBJ) 
+fpmaMain-muladd: fpmaMain-muladd.o doMany1.o $(COMMONOBJ)
+	$(CC) $(LDFLAGS) -o $@ $^
+fpmaMain-mul: fpmaMain-mul.o doMany2.o $(COMMONOBJ) 
 	$(CC) $(LDFLAGS) -o $@ $^ 
+
+fpmaMainHazard-add: fpmaMainHazard-add.o doMany2.o $(COMMONOBJ) 
+	$(CC) $(LDFLAGS) -o $@ $^ 
+fpmaMainHazard-muladd: fpmaMainHazard-muladd.o doMany1.o $(COMMONOBJ)
+	$(CC) $(LDFLAGS) -o $@ $^
+fpmaMainHazard-mul: fpmaMainHazard-mul.o doMany2.o $(COMMONOBJ) 
+	$(CC) $(LDFLAGS) -o $@ $^ 
+
 copyMain-small: copyMain-small.o utility.o doManyCopy.o 
 	$(CC) $(LDFLAGS) -o $@ $^ 
 copyMain-med: copyMain-med.o utility.o doManyCopy.o 
@@ -38,19 +47,24 @@ badLocality-med: badLocality-med.o utility.o
 	$(CC) $(LDFLAGS) -o $@ $^ 
 badLocality-large: badLocality-large.o utility.o
 	$(CC) $(LDFLAGS) -o $@ $^ 
-fpmaMain-maxPowerMain: fpmaMain-maxPowerMain.o $(COMMONOBJ) 
+fpmaMain-maxPowerMain: fpmaMain-maxPowerMain.o doMany2.o $(COMMONOBJ) 
 	$(CC) $(LDFLAGS) -o $@ $^ 
-fpmaMain-maxPowerL2: fpmaMain-maxPowerL2.o $(COMMONOBJ) 
+fpmaMain-maxPowerL2: fpmaMain-maxPowerL2.o doMany2.o $(COMMONOBJ) 
 	$(CC) $(LDFLAGS) -o $@ $^ 
 
 fpmaMain-add.o: fpmaMain.c
 	$(CC) -c fpmaMain.c -DOP=$(ADD) $(CFLAGS) -o fpmaMain-add.o
-
 fpmaMain-muladd.o: fpmaMain.c
 	$(CC) -c fpmaMain.c -DOP=$(MULADD) $(CFLAGS) -o fpmaMain-muladd.o
-
 fpmaMain-mul.o: fpmaMain.c
 	$(CC) -c fpmaMain.c -DOP=$(MUL) $(CFLAGS) -o fpmaMain-mul.o
+	
+fpmaMainHazard-add.o: fpmaMainHazard.c
+	$(CC) -c fpmaMainHazard.c -DLENGTH=$(HAZARD_LENGTH) -DOP=$(ADD) $(CFLAGS) -o fpmaMainHazard-add.o
+fpmaMainHazard-muladd.o: fpmaMainHazard.c
+	$(CC) -c fpmaMainHazard.c -DLENGTH=$(HAZARD_LENGTH) -DOP=$(MULADD) $(CFLAGS) -o fpmaMainHazard-muladd.o
+fpmaMainHazard-mul.o: fpmaMainHazard.c
+	$(CC) -c fpmaMainHazard.c -DLENGTH=$(HAZARD_LENGTH) -DOP=$(MUL) $(CFLAGS) -o fpmaMainHazard-mul.o
 	
 copyMain-small.o: copyMain.c
 	$(CC) -c copyMain.c -DSIZE=$(BCOPYSIZE) -DSTRIDE=0 -DMAXSIZE=$(L1SIZE) $(CFLAGS) -o copyMain-small.o
@@ -70,11 +84,16 @@ badLocality-med.o: badLocality.c
 badLocality-large.o: badLocality.c
 	$(CC) -c badLocality.c -DSIZETOTEST=$(MAXSIZE) $(CFLAGS) -o badLocality-large.o
 	
-fpmaMain-maxPowerMain.o: fpmaMain.c
+fpmaMain-maxPowerMain.o: fpmaMain.c 
 	$(CC) -c fpmaMain.c -DOP=$(MAXPOWER) -DARRAYSIZE=$(MAXSIZE) -DSTRIDE=$(MB) -DSTRIDE_ADJ=$(CACHELINE) $(CFLAGS) -o fpmaMain-maxPowerMain.o
-
 fpmaMain-maxPowerL2.o: fpmaMain.c
 	$(CC) -c fpmaMain.c -DOP=$(MAXPOWER) -DARRAYSIZE=$(L2SIZE) -DSTRIDE=$(KB64) -DSTRIDE_ADJ=$(CACHELINE) $(CFLAGS) -o fpmaMain-maxPowerL2.o
+	
+doMany1.o: doMany.c
+	$(CC) -c doMany.c -DLENGTH=$(HAZARD_LENGTH) -DOP=$(MULADD) $(CFLAGS) -o doMany1.o
+	
+doMany2.o: doMany.c
+	$(CC) -c doMany.c -DLENGTH=$(HAZARD_LENGTH) -DOP=$(ADD) $(CFLAGS) -o doMany2.o
 	
 
 fpmaMain-add.s: fpmaMain.c
@@ -89,7 +108,10 @@ fpmaMain-mul.s: fpmaMain.c
 copyMain-small.s: copyMain.c
 	$(CC) -S copyMain.c -DSIZE=$(BCOPYSIZE) -DSTRIDE=0 $(CFLAGS) -o copyMain-small.s
 
-X64all: fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med copyMain-large fpmaMain-maxPowerMain fpmaMain-maxPowerL2
+no_hazard: fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med copyMain-large fpmaMain-maxPowerMain fpmaMain-maxPowerL2
+hazard: fpmaMainHazard-add fpmaMainHazard-mul fpmaMainHazard-muladd
+
+X64all: no_hazard hazard
 
 ARMall: fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med copyMain-large fpmaMain-maxPowerMain fpmaMain-maxPowerL2
 #ARMall: fpmaMain-maxPower
@@ -97,6 +119,7 @@ ARMall: fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med co
 
 X64: clean X64all
 	mv fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med copyMain-large fpmaMain-maxPowerMain fpmaMain-maxPowerL2 ./x64bin
+	mv fpmaMainHazard-add fpmaMainHazard-mul fpmaMainHazard-muladd ./x64bin
 
 ARM: clean ARMall
 	mv fpmaMain-add fpmaMain-mul fpmaMain-muladd copyMain-small copyMain-med copyMain-large fpmaMain-maxPowerMain fpmaMain-maxPowerL2 ./armbin
@@ -112,5 +135,7 @@ pushAll: ARM
 	adb push ./armbin/fpmaMain-maxPowerL2 /data/arm
 
 clean:
-	rm -f fpmaMain-* copyMain-* badLocality-* *.o
+	rm -f fpmaMain-* fpmaMainHazard-* copyMain-* badLocality-* *.o
+	rm -f ./x64bin/fpmaMain-* ./x64bin/fpmaMainHazard-* ./x64bin/copyMain-* ./x64bin/badLocality-*
+	rm -f ./armbin/fpmaMain-* ./armbin/fpmaMainHazard-* ./armbin/copyMain-* ./armbin/badLocality-*
 

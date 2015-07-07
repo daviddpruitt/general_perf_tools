@@ -24,7 +24,11 @@ doManyExternal(long long numIters)
 					.00000013,
 					.00000014,
 					.00000015);
+#if (OP == 1) || (OP == 4)
+		count += 21600;
+#else
 		count += 10800;
+#endif
 	}				
 	//TableSize = TableSize;
 	//Table[0] = Table[0];

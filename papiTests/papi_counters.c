@@ -25,10 +25,10 @@ int init(void)
     return retval;
   }  
   
-fprintf(stdout, "PAPI Version Number\n");
-fprintf(stdout, "MAJOR:    %d\n", PAPI_VERSION_MAJOR(retval));
-fprintf(stdout, "MINOR:    %d\n", PAPI_VERSION_MINOR(retval));
-fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
+/*fprintf(stdout, "PAPI Version Number\n");*/
+/*fprintf(stdout, "MAJOR:    %d\n", PAPI_VERSION_MAJOR(retval));*/
+/*fprintf(stdout, "MINOR:    %d\n", PAPI_VERSION_MINOR(retval));*/
+/*fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));*/
   
     /* enable multiplexing */
 /*  retval = PAPI_multiplex_init();*/
@@ -44,14 +44,14 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
   
   num_events = 0;
   /* add total cycles to event set */
-  retval = PAPI_query_event (PAPI_TOT_CYC);
-  if (retval != PAPI_OK) {
-    fprintf (stderr,"No cycle counter.\n");
-  } else {
+/*  retval = PAPI_query_event (PAPI_TOT_CYC);*/
+/*  if (retval != PAPI_OK) {*/
+/*    fprintf (stderr,"No cycle counter.\n");*/
+/*  } else {*/
     retval = PAPI_add_event(EventSet, PAPI_TOT_CYC);
     if (retval != PAPI_OK) {
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "cycles", 7);
     event_list[num_events].event = PAPI_TOT_CYC;
     event_list[num_events].index = num_events;
@@ -68,13 +68,13 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
 /*  } */
   
   /* add total instructions to event set */
-  if (PAPI_query_event (PAPI_TOT_INS) != PAPI_OK) {
-    fprintf (stderr,"No instruction counter.\n");
-  } else { 
+/*  if (PAPI_query_event (PAPI_TOT_INS) != PAPI_OK) {*/
+/*    fprintf (stderr,"No instruction counter.\n");*/
+/*  } else { */
     retval = PAPI_add_event(EventSet, PAPI_TOT_INS);
     if (retval != PAPI_OK) {
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "instr", 6);
     event_list[num_events].event = PAPI_TOT_INS;
     event_list[num_events].index = num_events;
@@ -82,13 +82,13 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
   }
   
    /* add total stalled to event set */
-  if (PAPI_query_event (PAPI_RES_STL) != PAPI_OK) {
-    fprintf (stderr,"No cycle counter.\n");
-  } else { 
+/*  if (PAPI_query_event (PAPI_RES_STL) != PAPI_OK) {*/
+/*    fprintf (stderr,"No cycle counter.\n");*/
+/*  } else { */
     retval = PAPI_add_event(EventSet, PAPI_RES_STL);
     if (retval != PAPI_OK) {
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "cycles stalled", 15);
     event_list[num_events].event = PAPI_RES_STL;
     event_list[num_events].index = num_events;
@@ -96,13 +96,13 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
   }
   
    /* add total stalled on memory to event set */
-  if (PAPI_query_event (PAPI_MEM_RCY) != PAPI_OK) {
-    fprintf (stderr,"No memory stalled cycles.\n");
-  } else { 
+/*  if (PAPI_query_event (PAPI_MEM_RCY) != PAPI_OK) {*/
+/*    fprintf (stderr,"No memory stalled cycles.\n");*/
+/*  } else { */
     retval = PAPI_add_event(EventSet, PAPI_MEM_RCY);
     if (retval != PAPI_OK) {
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "cycles mem stalled", 19);
     event_list[num_events].event = PAPI_MEM_RCY;
     event_list[num_events].index = num_events;
@@ -110,13 +110,13 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
   }
   
    /* add total fp stall to event set */
-  if (PAPI_query_event (PAPI_FP_STAL) != PAPI_OK) {
-    fprintf (stderr,"No fpu cycles stalled counter.\n");
-  } else { 
+/*  if (PAPI_query_event (PAPI_FP_STAL) != PAPI_OK) {*/
+/*    fprintf (stderr,"No fpu cycles stalled counter.\n");*/
+/*  } else { */
     retval = PAPI_add_event(EventSet, PAPI_FP_STAL);
     if (retval != PAPI_OK) {
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "fpu cycles stalled", 19);
     event_list[num_events].event = PAPI_FP_STAL;
     event_list[num_events].index = num_events;
@@ -124,14 +124,14 @@ fprintf(stdout, "REVISION: %d\n", PAPI_VERSION_REVISION(retval));
   }  
   
   /* add total l1 access to event set */
-  if (PAPI_query_event (PAPI_L1_TCA) != PAPI_OK) {
-    fprintf (stderr,"No L1 access counter.\n");
-  } else { 
+/*  if (PAPI_query_event (PAPI_L1_TCA) != PAPI_OK) {*/
+/*    fprintf (stderr,"No L1 access counter.\n");*/
+/*  } else { */
     retval = PAPI_add_event(EventSet, PAPI_L1_TCA);
     if (retval != PAPI_OK) {
       handle_error(retval);
-      return retval;
-    }
+/*      return retval;*/
+    } else {
     strncpy(event_list[num_events].name, "L1 accesses", 12);
     event_list[num_events].event = PAPI_L1_TCA;
     event_list[num_events].index = num_events;
@@ -167,7 +167,7 @@ int start_counters(void)
   }
   printf("Starting counters\n");
   int retval = PAPI_start(EventSet);
-  if (PAPI_start(EventSet) != PAPI_OK) {
+  if (retval != PAPI_OK) {
     return retval;
   }
 }
@@ -185,6 +185,7 @@ int stop_counters(long long *counts)
   int retval = PAPI_stop(EventSet, values);
   int i = 0;
   for (i = 0; i < num_events; ++i) {
+    counts[i] = values[i];
     printf("values %lld\n", values[i]);
   }
   if (retval != PAPI_OK) {

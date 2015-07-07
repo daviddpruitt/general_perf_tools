@@ -40,6 +40,8 @@ main (int argc, char *argv[])
   
   printf("x %f y %f\n", x, y);
   y = x + 1;  
+  read_counters(values);
+  printf("counter %lld", values[0]);
   if (stop_counters(&values[0]) != PAPI_OK) {
     printf("Failed to stop_counters\n");fflush(stdout);
   }

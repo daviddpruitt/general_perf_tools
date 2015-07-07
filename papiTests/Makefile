@@ -1,4 +1,4 @@
-all: hwctrs net_test netlink
+all: hwctrs net_test netlink papi_test
 
 hwctrs: hwctrs.c handle_error.c
 	gcc handle_error.c hwctrs.c -lpapi -o hwctrs
