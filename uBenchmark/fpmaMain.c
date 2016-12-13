@@ -2,12 +2,16 @@
 #include "utility.h"
 #include "PerfCounts.h"
 
-#define f(x) f##x 
+#ifndef BTYPE
+# define BTYPE double
+#endif 
 
-#define pdef(n) double f(n)
+// define function parameters
+#define f(x) f##x 
+#define pdef(n) BTYPE f(n)
 #define paramDefs pdef(1),pdef(2),pdef(3),pdef(4),pdef(5),pdef(6),pdef(7),pdef(8),pdef(9),pdef(10),pdef(11),pdef(12),pdef(13),pdef(14),pdef(15)
-//paramDefs
-//#define OP 2
+
+// define operations
 #if OP == 1			/* muladd */
 # define m(x) f(x) += f(x) * f(x)
 #elif OP == 2			/* add */
@@ -17,7 +21,7 @@
 #elif OP == 4			/* muladd */
 # define m(x) f(x) += f(x) * f(x)
 #else
-ERROR - OP OUT OF RANGE
+#error ERROR - OP OUT OF RANGE
 #endif
 
 //#define ARRAYSIZE (10 * 1024 * 1024)
@@ -42,22 +46,17 @@ ERROR - OP OUT OF RANGE
 #endif
 
 u64Int numOpsTot = 1080000;
-double *array;
+BTYPE *array;
 unsigned stride;
 unsigned size;
 
-double
+BTYPE
 do10800Fn(paramDefs)
 {
-	//ninety;
-	//five_forty;
-	//two_thou_one_sixty;
-	long i = 0;
-	i = i;
+  long i = 0;
+  i = i;
 	do10800;
-/*	#if OP == 4*/
-/*	return f1+f2+f3+f4+f5+f6+f7+f8+f9+f10+f11+f12+f13+f14+f15;*/
-/*	#else*/
+
 	return f1+f2+f3+f4+f5+f6+f7+f8+f9+f10+f11+f12+f13+f14+f15;
 /*	#endif*/
 }
@@ -66,7 +65,7 @@ long long
 doMany(long long numIters)
 {
 	long long count = 0;
-	double x = 0;
+	BTYPE x = 0;
 	while (numIters--) {
 			x +=do10800Fn(.0000001, 
 					.0000002, 
@@ -83,7 +82,12 @@ doMany(long long numIters)
 					.00000013,
 					.00000014,
 					.00000015);
+					// add count based on op type
+#if (OP == 1) || (OP == 4)
+		count += 21600;
+#else
 		count += 10800;
+#endif
 	}				
 	//TableSize = TableSize;
 	//Table[0] = Table[0];
@@ -98,7 +102,7 @@ extern long long doManyExternal(long long numIters);
 int
 main() // int argc, char *argv[])
 {
-	double x = 0, cputime = 0.0;
+	double cputime = 0.0;
 	long long numIters = 10;
 	long long ops;
 	uint64_t *counts;
@@ -107,14 +111,14 @@ main() // int argc, char *argv[])
 	// if we're doing fp and arithmetic
 	#if OP == 4
 	size = ARRAYSIZE / 8;
-	array = (double*)malloc(sizeof(double) * size);
+	array = (BTYPE*)malloc(sizeof(BTYPE) * size);
 	printf("Array pointer %p\n", array);
-	printf("x=%f size=%d stride=%d stride_Adj=%d\n",x,size,STRIDE,STRIDE_ADJ);
+/*	printf("x=%f size=%d stride=%d stride_Adj=%d\n",x,size,STRIDE,STRIDE_ADJ);*/
 	long i;
 	stride = STRIDE;
 	fflush(stdout);
 	for (i = 0; i < size; i++) {
-		array[i] = (double) 0.00000000001 * i;
+		array[i] = (BTYPE) 0.00000000001 * i;
 	}
 	#endif
 	
@@ -123,11 +127,6 @@ main() // int argc, char *argv[])
 	
 	setupCounters();
 	resetCounters();
-	
-	printf("x %f\n",x);
-	//for (i = 0; i < 1000000; i++) {
-	//	x += instrOnly();
-	//}
 
 	do {
 		numIters *= 10;
@@ -141,7 +140,7 @@ main() // int argc, char *argv[])
 		printf("%g seconds, %g ops, %g ops/sec \n", cputime, (double)ops, ((double) ops) / cputime);
 		printf("%"PRIu64" instr %"PRIu64" fp instr %"PRIu64" cycles %"PRIu64" dcache stalls \n" ,counts[1], counts[6], counts[0], counts[4]);
 	} while (cputime < 15.0);	
-	printf("x %f\n",x);
+
 	closeCounters();
 	return 0;
 }
