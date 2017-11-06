@@ -18,8 +18,9 @@
 #ifndef LOAD_WIDTH
 #define LOAD_WIDTH 8
 #endif
-
+#ifndef NUM_ITERS
 #define NUM_ITERS 10000000U
+#endif
 
 #define THOUS   1000
 #define MILLION 1000000
@@ -99,11 +100,11 @@ int main(int argc, char **argv)
   fillArray(array, arraySize);
 
   // cache warmup
-  retval = runTest(1, array, arraySize, 
-		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);  
-  
+  retval = runTest(1, array, arraySize,
+		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
+
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &startTime);
-  retval = runTest(NUM_ITERS, array, arraySize, 
+  retval = runTest(NUM_ITERS, array, arraySize,
 		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &stopTime);
 

@@ -1,7 +1,7 @@
 #include "runTest.h"
 
 uint64_t
-runTest(uint64_t numIters, uint64_t *testArray, uint64_t testArraySize,
+runTest(uint64_t numIters, uint64_t *__restrict testArray, uint64_t testArraySize,
 	uint64_t index_0, uint64_t index_1, uint64_t index_2, uint64_t index_3,
 	uint64_t index_4, uint64_t index_5, uint64_t index_6, uint64_t index_7)
 {
@@ -20,7 +20,7 @@ runTest(uint64_t numIters, uint64_t *testArray, uint64_t testArraySize,
 
   dest = 0;
   for (iter = 0; iter < numIters; iter++) {
-    #include "access.h" 
+    #include "access.h"
   }
 
   dest = index_0 + index_1 + index_2 + index_3 + index_4 + index_5 + index_6 + index_7;

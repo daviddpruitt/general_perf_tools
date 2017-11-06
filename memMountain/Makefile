@@ -20,8 +20,8 @@ access.h: createAccessPattern.py
 runTest.o: runTest.c access.h
 	$(CC) $(CFLAGS) $< -c
 
-random: memMountain.c 
-	./createAccessPattern.py 1 $(size) random	
+random: memMountain.c
+	./createAccessPattern.py 1 $(size) random
 	$(CC) $(CFLAGS) $< -DARRAY_SIZE=$(size) -DSTRIDE=1 -DRANDOM_ACCESS=$(random) -o $@
 
 randomTest: randtest.c randomutils.o
