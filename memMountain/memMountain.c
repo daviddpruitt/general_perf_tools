@@ -6,8 +6,8 @@
 #include "randomutils.h"
 #include "runTest.h"
 
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE 4096U
+#ifndef NUM_ELEMS
+#define NUM_ELEMS 4096U
 #endif
 #ifndef STRIDE
 #define STRIDE 1U
@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 10000000U
+#define NUM_ITERS 100000000U
 #endif
 
 #define THOUS   1000
@@ -29,20 +29,20 @@
 // this is totally a hack because some compilers
 // happily ignore the long part of the number and
 // we have bits truncated
-uint64_t arraySize = ARRAY_SIZE;
+uint64_t numElems = NUM_ELEMS;
 uint64_t stride = STRIDE;
 uint64_t numIters = NUM_ITERS;
 uint64_t loadWidth = LOAD_WIDTH;
 uint64_t randomAccess = RANDOM_ACCESS;
 
-uint64_t fillArray(uint64_t *array, uint64_t arraySize)
+uint64_t fillArray(uint64_t *array, uint64_t numElems)
 {
   uint64_t index;
-  for (index = 0; index < arraySize; index++) {
+  for (index = 0; index < numElems; index++) {
     if (randomAccess) {
-      array[index] = getRand(0, arraySize);
+      array[index] = getRand(0, numElems);
     } else {
-      array[index] = (index + loadWidth * stride) % arraySize;
+      array[index] = (index + loadWidth * stride) % numElems;
     }
   }
 
@@ -78,12 +78,12 @@ timespec_subtract (struct timespec *result, struct timespec *x, struct timespec 
 
 int main(int argc, char **argv)
 {
-  uint64_t array[ARRAY_SIZE];
-  uint64_t numLoads = (arraySize / stride) * numIters;
-  printf("ARRAY_SIZE/STRIDE %" PRIu64 "\n", (arraySize / stride));
+  uint64_t array[NUM_ELEMS];
+  uint64_t numLoads = (numElems / stride) * numIters;
+  printf("NUM_ELEMS/STRIDE %" PRIu64 "\n", (numElems / stride));
   printf("sizeof(numLoads) %zu \n", sizeof(numLoads));
   printf("size %" PRIu64 " stride %" PRIu64 " iters %" PRIu64 " loads %" PRIu64 "\n",
-	 arraySize, stride, numIters, numLoads);
+	 numElems, stride, numIters, numLoads);
   uint64_t numBytes = numLoads * sizeof(uint64_t);
   struct timespec startTime;
   struct timespec stopTime;
@@ -97,14 +97,14 @@ int main(int argc, char **argv)
   uint64_t retval;
   srand(timeSeed());
 
-  fillArray(array, arraySize);
+  fillArray(array, numElems);
 
   // cache warmup
-  retval = runTest(1, array, arraySize,
+  retval = runTest(1, array, numElems,
 		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
 
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &startTime);
-  retval = runTest(NUM_ITERS, array, arraySize,
+  retval = runTest(NUM_ITERS, array, numElems,
 		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &stopTime);
 
@@ -113,9 +113,10 @@ int main(int argc, char **argv)
   gBytesPerSec = numBytes / (elapsed * BILLION);
   latency = (elapsed / (numLoads * 1.0)) * BILLION;
   printf("Retval %" PRIu64 "\n", retval);
-  printf("Elapsed: %f Bytes: %" PRIu64 " gB/sec %f latency %f\n",
+  printf("Elapsed: %f Bytes: %" PRIu64 " gB/sec %f latency %f ops/sec %f\n",
 	 elapsed,
 	 numBytes,
 	 gBytesPerSec,
-	 latency);
+	 latency,
+	 numLoads);
 }

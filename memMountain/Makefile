@@ -1,28 +1,33 @@
-stride 	= 1
-random	= 0
-size	= 128
-CC	= gcc
-CFLAGS	= -O3 -g -mtune=native -march=native $(DEFINES)
+stride 		= 1
+random		= 0
+num_elems	= 256
+CC		= gcc
+CFLAGS		= -O3 -g -mtune=native -march=native $(DEFINES)
 
 all: memMountain random
 
 memMountain: memMountain.c randomutils.o runTest.o
-	$(CC) $(CFLAGS) $^ -DARRAY_SIZE=$(size) -DSTRIDE=$(stride) -DRANDOM_ACCESS=0 -o $@
+	$(CC) $(CFLAGS) $^ -DNUM_ELEMS=$(num_elems) -DSTRIDE=$(stride) -DRANDOM_ACCESS=0 -o $@
 
 memMountainPtrChase: memMountain.c randomutils.o
-	./createAccessPattern.py 1 $(size) strided ptr
+	./createAccessPattern.py -s 1 -n $(num_elems) -b ptr
 	$(CC) $(CFLAGS) -c runTest.c
-	$(CC) $(CFLAGS) $^ runTest.o -DARRAY_SIZE=$(size) -DSTRIDE=$(stride) -DRANDOM_ACCESS=$(random) -o $@
+	$(CC) $(CFLAGS) $^ runTest.o -DNUM_ELEMS=$(num_elems) -DSTRIDE=$(stride) -DRANDOM_ACCESS=$(random) -o $@
+
+instrMountain: memMountain.c randomutils.o
+	./createAccessPattern.py -s 1 -n $(num_elems) -b instr
+	$(CC) $(CFLAGS) -c runTest.c
+	$(CC) $(CFLAGS) $^ runTest.o -DNUM_ELEMS=$(num_elems) -DSTRIDE=$(stride) -DRANDOM_ACCESS=$(random) -o $@
 
 access.h: createAccessPattern.py
-	./createAccessPattern.py $(stride) $(size)
+	./createAccessPattern.py $(stride) $(num_elems)
 
 runTest.o: runTest.c access.h
 	$(CC) $(CFLAGS) $< -c
 
 random: memMountain.c
-	./createAccessPattern.py 1 $(size) random
-	$(CC) $(CFLAGS) $< -DARRAY_SIZE=$(size) -DSTRIDE=1 -DRANDOM_ACCESS=$(random) -o $@
+	./createAccessPattern.py 1 $(num_elems) random
+	$(CC) $(CFLAGS) $< -DNUM_ELEMS=$(num_elems) -DSTRIDE=1 -DRANDOM_ACCESS=$(random) -o $@
 
 randomTest: randtest.c randomutils.o
 	$(CC) $(CFLAGS) $^ -o $@
@@ -31,4 +36,4 @@ randomutils.o: randomutils.c randomutils.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
 clean:
-	rm -rf *.o memMountain memMountainPtrChase random randomTest access.h
+	rm -rf *.o memMountain instrMountain memMountainPtrChase random randomTest

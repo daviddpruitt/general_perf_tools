@@ -2,58 +2,76 @@
 
 import sys
 import random
+import argparse
 
-if len(sys.argv) < 3 or len(sys.argv) > 6:
-    print "Usage:"
-    print "%s <stride> <size> <random/strided> <ptr/asm> <loadwidth>" % (sys.argv[0])
-    exit()
+def getVectISA():
+    ''' Get what Vector instructions the CPU supports '''
+    try:
+        cpuFile = open("/proc/cpuinfo", 'r')
+    except Exception as err:
+        print "Unable to open CPU info file: %s\nAssuming AVX support" % err
+        return "avx"
+
+    for line in cpuFile:
+        if "avx2" in line:
+            return "avx2"
+        if "avx" in line:
+            return "avx"
+        if "vfpv4" in line:
+            return "vfpv4"
+
+    
+argParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+argParser.add_argument("--stride",     "-s", 
+                       help="Stride length when walking array          ", 
+                       type=int, default=1)
+
+argParser.add_argument("--random",     "-r", 
+                       help="Use a random memory access pattern        ", 
+                       type=bool, default=False)
+
+argParser.add_argument("--num_elems",  "-n", 
+                       help="Total number of elements in the array     ", 
+                       type=int, default=8192)
+
+argParser.add_argument("--bench",      "-b", 
+                       help="The type of benchmark to run              ", 
+                       type=str, default="ptr", choices=["ptr","asm","instr"])
+
+argParser.add_argument("--loads_iter", "-l", 
+                       help="Number of elements to load per iteration  ", 
+                       type=int, default=2048)
+
+args = argParser.parse_args()
 
 # largest number of loads we want to do
 # too many slows down compiles
-maxLoads = 2048
-outfile = open("access.h", 'w')
-
-stride = int(sys.argv[1])
-size = int(sys.argv[2])
-randomPattern = False
-asm = True
+loadsIter = args.loads_iter
+benchType = args.bench
+randomPattern = args.random
 numIndexesToUse = 8
 
-if len(sys.argv) >= 4:
-    if sys.argv[3] == "random":
-        randomPattern = True
-    elif sys.argv[3] == "strided":
-        randomPattern = False
-    else:
-        print "Did not understand if random or strided, exiting"
-        exit()
+cpuType = getVectISA()
+print "CPU type %s" % cpuType
 
-if len(sys.argv) >= 5:
-    if sys.argv[4] == "asm":
-        asm = True
-    elif sys.argv[4] == "ptr":
-        asm = False
-    else:
-        print "Did not understand if I should do assembly or pointer chasing, exiting"
-        exit()
+outfile = open("access.h", 'w')
 
-if len(sys.argv) >= 6:
-    numIndexesToUse = int(sys.argv[5])    
+stride = args.stride 
+numElems = args.num_elems
+numLoads = numElems / stride
+if numLoads % stride is not 0:
+    print "Warning stride does not evenly divide the number of loads"
 
-numLoads = size / stride
-numChunks = numLoads / maxLoads
-if size % stride is not 0:
-    print "Warning stride does not evenly divide size"
-
+numChunks = numLoads / loadsIter
 if numChunks < 1:
     numChunks = 1
-    maxLoads = numLoads
-elif numLoads % maxLoads is not 0:
-    print "Warning, loads will be split up unevenly"
+    loadsIter = numLoads
+elif numLoads % loadsIter is not 0:
+    print "Warning, %s loads will be split up unevenly among %s loops" % (numLoads, numChunks)
 
 #print "numChunks %s numLoads %s maxLoads %s" % (numChunks, numLoads, maxLoads)
 
-if asm:
+if benchType == "asm":
     regNumber = 8
     #strided pattern
     if randomPattern is False:
@@ -74,10 +92,10 @@ if asm:
                 regNumber = 8
             else:
                 regNumber = regNumber + 1 
-else:
+elif benchType == "ptr":
     indexNum = 0
     outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks);
-    for index in range(0, maxLoads):
+    for index in range(0, loadsIter):
         outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
         #outfile.write('			printf("%%d \\n", index_%s);\n' % (indexNum));
         #outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
@@ -86,4 +104,23 @@ else:
         if indexNum is numIndexesToUse:
             indexNum = 0
     outfile.write('		}\n')
- 
+elif benchType == "instr":
+    regIndex = 0
+    outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
+    #outfile.write('	        IACA_START\n')
+    if cpuType == "avx":
+        loadsIter = loadsIter / 4
+
+    for index in range(0, loadsIter):
+        if index % 2 is 0:
+            instr = "vaddpd"
+        else:
+            instr = "vaddpd"
+        outfile.write('			asm("%s %%ymm%s, %%ymm%s, %%ymm%s");\n' % 
+                      (instr, (regIndex + 2) % numIndexesToUse, (regIndex + 3) % numIndexesToUse, regIndex))
+        regIndex = regIndex + 1
+
+        if regIndex == numIndexesToUse:
+           regIndex = 0
+    outfile.write('		}\n')
+    #outfile.write('		IACA_END\n')
