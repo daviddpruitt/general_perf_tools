@@ -1,6 +1,6 @@
 stride 		= 1
 random		= 0
-num_elems	= 256
+num_elems	= 512
 CC		= gcc
 CFLAGS		= -O3 -g -mtune=native -march=native $(DEFINES)
 

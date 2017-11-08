@@ -49,7 +49,7 @@ args = argParser.parse_args()
 loadsIter = args.loads_iter
 benchType = args.bench
 randomPattern = args.random
-numIndexesToUse = 8
+numIndexesToUse = 16
 
 cpuType = getVectISA()
 print "CPU type %s" % cpuType
@@ -110,14 +110,13 @@ elif benchType == "instr":
     #outfile.write('	        IACA_START\n')
     if cpuType == "avx":
         loadsIter = loadsIter / 4
-
+        instr = "vaddpd"
+    if cpuType == "avx2":
+        loadsIter = loadsIter / 8
+        instr = "vfmadd231pd"
     for index in range(0, loadsIter):
-        if index % 2 is 0:
-            instr = "vaddpd"
-        else:
-            instr = "vaddpd"
         outfile.write('			asm("%s %%ymm%s, %%ymm%s, %%ymm%s");\n' % 
-                      (instr, (regIndex + 2) % numIndexesToUse, (regIndex + 3) % numIndexesToUse, regIndex))
+                      (instr, (regIndex + 1) % numIndexesToUse, (regIndex + 2) % numIndexesToUse, regIndex))
         regIndex = regIndex + 1
 
         if regIndex == numIndexesToUse:

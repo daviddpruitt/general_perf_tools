@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 100000000U
+#define NUM_ITERS 1000000000U
 #endif
 
 #define THOUS   1000
@@ -35,7 +35,7 @@ uint64_t numIters = NUM_ITERS;
 uint64_t loadWidth = LOAD_WIDTH;
 uint64_t randomAccess = RANDOM_ACCESS;
 
-uint64_t fillArray(uint64_t *array, uint64_t numElems)
+void fillArray(uint64_t *array, uint64_t numElems)
 {
   uint64_t index;
   for (index = 0; index < numElems; index++) {
@@ -88,9 +88,8 @@ int main(int argc, char **argv)
   struct timespec startTime;
   struct timespec stopTime;
   struct timespec diffTime;
-  double elapsed;
-  double gBytesPerSec;
-  double latency;
+  double elapsed, latency;
+  double gBytesPerSec, opsPerSec;
   int index_0 = 0, index_1 = 0, index_2 = 0, index_3 = 0;
   int index_4 = 0, index_5 = 0, index_6 = 0, index_7 = 0;
 
@@ -110,13 +109,16 @@ int main(int argc, char **argv)
 
   timespec_subtract(&diffTime, &stopTime, &startTime);
   elapsed = (diffTime.tv_sec * 1.0) + (diffTime.tv_nsec * 1.0) / BILLION;
-  gBytesPerSec = numBytes / (elapsed * BILLION);
   latency = (elapsed / (numLoads * 1.0)) * BILLION;
+  gBytesPerSec = numBytes / (elapsed * BILLION);
+  opsPerSec = (numLoads * 1.0) / elapsed;
   printf("Retval %" PRIu64 "\n", retval);
   printf("Elapsed: %f Bytes: %" PRIu64 " gB/sec %f latency %f ops/sec %f\n",
 	 elapsed,
 	 numBytes,
 	 gBytesPerSec,
 	 latency,
-	 numLoads);
+	 opsPerSec);
+
+  return 0;
 }
