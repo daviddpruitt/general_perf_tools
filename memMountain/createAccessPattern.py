@@ -36,7 +36,7 @@ argParser.add_argument("--num_elems",  "-n",
 
 argParser.add_argument("--bench",      "-b", 
                        help="The type of benchmark to run              ", 
-                       type=str, default="ptr", choices=["ptr","asm","instr"])
+                       type=str, default="ptr", choices=["ptr","asm","instr","instr-load"])
 
 argParser.add_argument("--loads_iter", "-l", 
                        help="Number of elements to load per iteration  ", 
@@ -49,7 +49,7 @@ args = argParser.parse_args()
 loadsIter = args.loads_iter
 benchType = args.bench
 randomPattern = args.random
-numIndexesToUse = 16
+numIndexesToUse = 8
 
 cpuType = getVectISA()
 print "CPU type %s" % cpuType
@@ -72,7 +72,7 @@ elif numLoads % loadsIter is not 0:
 #print "numChunks %s numLoads %s maxLoads %s" % (numChunks, numLoads, maxLoads)
 
 if benchType == "asm":
-    regNumber = 8
+    regIndex = 0
     #strided pattern
     if randomPattern is False:
         for index in range(0, size, stride):
@@ -108,6 +108,7 @@ elif benchType == "instr":
     regIndex = 0
     outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
     #outfile.write('	        IACA_START\n')
+
     if cpuType == "avx":
         loadsIter = loadsIter / 4
         instr = "vaddpd"
@@ -116,10 +117,26 @@ elif benchType == "instr":
         instr = "vfmadd231pd"
     for index in range(0, loadsIter):
         outfile.write('			asm("%s %%ymm%s, %%ymm%s, %%ymm%s");\n' % 
-                      (instr, (regIndex + 1) % numIndexesToUse, (regIndex + 2) % numIndexesToUse, regIndex))
+                      (instr, 
+                       (regIndex + 1) % numIndexesToUse, 
+                       (regIndex + 2) % numIndexesToUse, 
+                       regIndex))
         regIndex = regIndex + 1
 
         if regIndex == numIndexesToUse:
            regIndex = 0
     outfile.write('		}\n')
     #outfile.write('		IACA_END\n')
+elif benchType == "instr-load":
+    regIndex = 0
+    outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
+    for index in range(0, loadsIter):
+        outfile.write('			asm("mulsd %%xmm%s, %%xmm%s");\n' % 
+                      ((regIndex + 1) % numIndexesToUse, 
+                       regIndex))
+        regIndex = regIndex + 1
+
+        if regIndex == numIndexesToUse:
+           regIndex = 0
+    outfile.write('		}\n')
+                
