@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 100000000U
+#define NUM_ITERS 10000000U
 #endif
 
 #define THOUS   1000
@@ -35,7 +35,7 @@ uint64_t numIters = NUM_ITERS;
 uint64_t loadWidth = LOAD_WIDTH;
 uint64_t randomAccess = RANDOM_ACCESS;
 
-void fillArray(uint64_t *array, uint64_t numElems)
+void fillArray(double *array, uint64_t numElems)
 {
   uint64_t index;
   for (index = 0; index < numElems; index++) {
@@ -43,9 +43,9 @@ void fillArray(uint64_t *array, uint64_t numElems)
       array[index] = getRand(0, numElems);
     } else {
       array[index] = (index + loadWidth * stride) % numElems;
+      //printf("array[%d]=%f\n", array[index]);
     }
   }
-
 }
 
 // from http://www.gnu.org/software/libc/manual/html_node/Elapsed-Time.html
@@ -76,9 +76,15 @@ timespec_subtract (struct timespec *result, struct timespec *x, struct timespec 
   return x->tv_sec < y->tv_sec;
 }
 
+void init(void)
+{
+  srand(timeSeed());
+}
+
 int main(int argc, char **argv)
 {
-  uint64_t array[NUM_ELEMS];
+  double array[NUM_ELEMS], retval;
+  //array = (double*)malloc(NUM_ELEMS * sizeof(double));
   uint64_t numLoads = (numElems / stride) * numIters;
   //printf("NUM_ELEMS/STRIDE %" PRIu64 "\n", (numElems / stride));
   //printf("sizeof(numLoads) %zu \n", sizeof(numLoads));
@@ -90,20 +96,19 @@ int main(int argc, char **argv)
   struct timespec diffTime;
   double elapsed, latency;
   double gBytesPerSec, opsPerSec;
-  int index_0 = 0, index_1 = 0, index_2 = 0, index_3 = 0;
-  int index_4 = 0, index_5 = 0, index_6 = 0, index_7 = 0;
-
-  uint64_t retval;
-  srand(timeSeed());
+  int index_0 = 0, index_1 = 1, index_2 = 2, index_3 = 3;
+  int index_4 = 4, index_5 = 5, index_6 = 6, index_7 = 7;
 
   fillArray(array, numElems);
 
   // cache warmup
   retval = runTest(1, array, numElems,
 		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
+  fillArray(array, numElems);
+
 
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &startTime);
-  retval = runTest(NUM_ITERS, array, numElems,
+  retval = runTest(10, array, numElems,
 		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &stopTime);
 
@@ -112,7 +117,7 @@ int main(int argc, char **argv)
   latency = (elapsed / (numLoads * 1.0)) * BILLION;
   gBytesPerSec = numBytes / (elapsed * BILLION);
   opsPerSec = (numLoads * 1.0) / elapsed;
-  printf("Retval %" PRIu64 "\n", retval);
+  printf("Retval %f\n", retval);
   printf("Elapsed: %f Bytes: %" PRIu64 " gB/sec %f latency %f ops/sec %f\n",
 	 elapsed,
 	 numBytes,
