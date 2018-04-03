@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 10U
+#define NUM_ITERS 1000000000U
 #endif
 
 #define THOUS   1000
@@ -42,7 +42,7 @@ void fillArray(double *array, uint64_t numElems)
     if (randomAccess) {
       array[index] = getRand(0, numElems);
     } else {
-      array[index] = 1.00001; //(index + loadWidth * stride) % numElems;
+      array[index] = 1.00; //(index + loadWidth * stride) % numElems;
     }
   }
 }

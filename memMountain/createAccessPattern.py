@@ -20,64 +20,36 @@ def getVectISA():
         if "vfpv4" in line:
             return "vfpv4"
 
-def writeRegAssignHeaders(cpuType, numRegistersToUse, benchType):
-    # create empty files if bench type isn't asm
-    if benchType != "asm":
-        outfile = open("assignRegs.h","w")
-        outfile.close()
-        outfile = open("assignDest.h","w")
-        outfile.close()
-        return
+def writeHeaders(cpuType):
+    """ Generates the architecture specific header.
+
+        This header includes fp registers and the base
+        registers used for indexing 
+        
+        Arguments:
+        cpuType -- The floating point extensions the CPU supports
+    """
+    try:
+        outfile = open("archSpecific.h","w")
+    except Error as err:
+        print("Error opening architecture specific file {0}".format(err))
+        exit(1)
+
+    registerPrefix = ""
+    baseRegister   = ""
 
     # first write stuff into registers
     registerPrefix = "xmm"
     if cpuType is "avx" or "avx2":
+        baseRegister   = "rbx"
         registerPrefix = "xmm"
     elif cpuType is "vfpv4":
+        baseRegister   = "r12"  # TODO FIXME might not be right register
         registerPrefix = "d"
 
-    # write var to reg header
-    outfile = open("assignRegs.h","w")
-    outfile.write('		asm(')
-    instructions = ""
-    operands     = ""
-    for regNumber in range(0, numRegistersToUse):
-        instructions = instructions + str('"  vmovsd %%%s, %%%%%s\\n"\n		    ' % 
-                                          (str(regNumber), 
-                                           registerPrefix + str(regNumber)))
-        operands = operands + str('		           "m" (%s),\n' % 
-                                  ("dest_" + str(regNumber)))
-        #outfile.write('		asm("vmovsd %%0, %%%%%s"::"m" (%s):);\n' % 
-        #              (registerPrefix + str(regNumber), 
-        #               'dest_' + str(regNumber) ))
-    instructions = instructions[:-7]
-    operands = operands[:-2]
-    outfile.write(instructions)
-    outfile.write('::\n')
-    outfile.write(operands)
-    outfile.write(':);\n')
-    outfile.close()
+    outfile.write('#define FP_PREFIX "{0}"\n'.format(registerPrefix))
+    outfile.write('#define BASE_REG  "{0}"\n'.format(baseRegister))
 
-    # write reg to var header
-    outfile = open("assignDest.h","w")
-    outfile.write('		asm(')
-    instructions = ""
-    operands     = ""
-    for regNumber in range(0, numRegistersToUse):
-        #outfile.write('		asm("vmovsd %%%%%s, %%0":"=m" (%s)::);\n' % 
-        #              (registerPrefix + str(regNumber), 
-        #               'dest_' + str(regNumber) ))
-        instructions = instructions + str('"  vmovsd %%%%%s, %%%s\\n"\n		    ' %
-                                          (registerPrefix + str(regNumber), 
-                                           regNumber))
-        operands = operands + str('		           "=m" (%s),\n' % 
-                                  ("dest_" + str(regNumber)))
-    instructions = instructions[:-7]
-    operands = operands[:-2]
-    outfile.write(instructions)
-    outfile.write(':\n')
-    outfile.write(operands)
-    outfile.write('::);\n')
     outfile.close()
 
         
@@ -94,6 +66,10 @@ argParser.add_argument("--random",     "-r",
 argParser.add_argument("--num_elems",  "-n", 
                        help="Total number of elements in the array     ", 
                        type=int, default=4096)
+
+argParser.add_argument("--num_regs",   "-g", 
+                       help="Total number of registers to use          ", 
+                       type=int, default=8)
 
 argParser.add_argument("--bench",      "-b", 
                        help="The type of benchmark to run              ", 
@@ -115,22 +91,20 @@ loadsIter = args.loads_iter
 benchType = args.bench
 enableIaca = args.iaca
 randomPattern = args.random
-numRegsToUse = 8
+numRegsToUse = args.num_regs
 
 cpuType = getVectISA()
 print ("CPU type {0}".format(cpuType))
 
-writeRegAssignHeaders(cpuType, numRegsToUse, benchType)
-
-#exit()
+writeHeaders(cpuType)
 
 outfile = open("access.h", 'w')
 
 stride = args.stride 
 numElems = args.num_elems
 numLoads = numElems / stride
-if numLoads % stride is not 0:
-    print ("Warning stride does not evenly divide the number of loads {0}".format(numLoads % stride))
+if int(numLoads % stride) is not 0:
+    print ("Warning stride does not evenly divide the number of loads {0} leftover".format(numLoads % stride))
 
 numChunks = numLoads / loadsIter
 if numChunks < 1:
@@ -161,10 +135,10 @@ if benchType == "asm":
             #              (regNumber,
             #               (regNumber + 1) % numRegsToUse,
             #               index))
-            outfile.write('		asm("vmulsd %0, %%xmm{0}, %%xmm{1}"::"m" (testArray[{2}]));\n'.format( 
-                          (regNumber + 1) % numRegsToUse, regNumber, index))
-            #outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format( 
-            #              index * 8, (regNumber + 1) % numRegsToUse, regNumber))
+            #outfile.write('		asm("vmulsd %0, %%xmm{0}, %%xmm{1}"::"m" (testArray[{2}]));\n'.format( 
+            #              (regNumber + 1) % numRegsToUse, regNumber, index))
+            outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format( 
+                          index * 8, (regNumber + 1) % numRegsToUse, regNumber))
 
             regNumber = regNumber + 1
             if regNumber == numRegsToUse:
