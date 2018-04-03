@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 10000000U
+#define NUM_ITERS 10U
 #endif
 
 #define THOUS   1000
@@ -42,8 +42,7 @@ void fillArray(double *array, uint64_t numElems)
     if (randomAccess) {
       array[index] = getRand(0, numElems);
     } else {
-      array[index] = (index + loadWidth * stride) % numElems;
-      //printf("array[%d]=%f\n", array[index]);
+      array[index] = 1.00001; //(index + loadWidth * stride) % numElems;
     }
   }
 }
@@ -102,14 +101,14 @@ int main(int argc, char **argv)
   fillArray(array, numElems);
 
   // cache warmup
-  retval = runTest(1, array, numElems,
-		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
+  //retval = runTest(1, array, numElems,
+  //		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   fillArray(array, numElems);
 
 
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &startTime);
-  retval = runTest(10, array, numElems,
-		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
+  retval = runTest(numIters, array, numElems,
+  		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &stopTime);
 
   timespec_subtract(&diffTime, &stopTime, &startTime);

@@ -130,7 +130,7 @@ stride = args.stride
 numElems = args.num_elems
 numLoads = numElems / stride
 if numLoads % stride is not 0:
-    print ("Warning stride does not evenly divide the number of loads")
+    print ("Warning stride does not evenly divide the number of loads {0}".format(numLoads % stride))
 
 numChunks = numLoads / loadsIter
 if numChunks < 1:
@@ -157,12 +157,14 @@ if benchType == "asm":
             outfile.write('	        IACA_START\n')
         
         for index in range(0, numElems, stride):
-            outfile.write('		dest_%s = dest_%s * testArray[%s];\n' % 
-                          (regNumber,
-                           (regNumber + 1) % numRegsToUse,
-                           index))
-            #outfile.write('		asm("vmulsd %s(%%rsi), %%xmm%s, %%xmm%s");\n' % 
-            #              ((index * 8), (regNumber + 1), regNumber))
+            #outfile.write('		dest_%s = dest_%s * testArray[%s];\n' % 
+            #              (regNumber,
+            #               (regNumber + 1) % numRegsToUse,
+            #               index))
+            outfile.write('		asm("vmulsd %0, %%xmm{0}, %%xmm{1}"::"m" (testArray[{2}]));\n'.format( 
+                          (regNumber + 1) % numRegsToUse, regNumber, index))
+            #outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format( 
+            #              index * 8, (regNumber + 1) % numRegsToUse, regNumber))
 
             regNumber = regNumber + 1
             if regNumber == numRegsToUse:
