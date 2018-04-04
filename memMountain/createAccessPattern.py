@@ -38,7 +38,6 @@ def writeHeaders(cpuType):
     registerPrefix = ""
     baseRegister   = ""
 
-    # first write stuff into registers
     registerPrefix = "xmm"
     if cpuType is "avx" or "avx2":
         baseRegister   = "rbx"
@@ -56,32 +55,37 @@ def writeHeaders(cpuType):
  
 argParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 argParser.add_argument("--stride",     "-s", 
-                       help="Stride length when walking array          ", 
+                       help="Stride length when walking array               ", 
                        type=int, default=1)
 
 argParser.add_argument("--random",     "-r", 
-                       help="Use a random memory access pattern        ", 
+                       help="Use a random memory access pattern             ", 
                        type=bool, default=False)
 
 argParser.add_argument("--num_elems",  "-n", 
-                       help="Total number of elements in the array     ", 
+                       help="Total number of elements in the array          ", 
                        type=int, default=4096)
 
 argParser.add_argument("--num_regs",   "-g", 
-                       help="Total number of registers to use          ", 
+                       help="Total number of registers to use               ", 
                        type=int, default=8)
 
 argParser.add_argument("--bench",      "-b", 
-                       help="The type of benchmark to run              ", 
+                       help="The type of benchmark to run                   ", 
                        type=str, default="ptr", choices=["ptr","asm","instr","instr-load"])
 
 argParser.add_argument("--loads_iter", "-l", 
-                       help="Number of elements to load per iteration  ", 
+                       help="Number of elements to load per iteration       ", 
                        type=int, default=2048)
 
-argParser.add_argument("--iaca",      "-i",
-                       help="Enable Intel IACA marks                   ",
+argParser.add_argument("--iaca",       "-i",
+                       help="Enable Intel IACA marks                        ",
                        type=bool, default=False)
+
+argParser.add_argument("--stalls",     "-p",
+                       help="Force pipeline stalls by adding dependencies   ",
+                       type=bool, default=False)
+
 
 args = argParser.parse_args()
 
@@ -92,9 +96,20 @@ benchType = args.bench
 enableIaca = args.iaca
 randomPattern = args.random
 numRegsToUse = args.num_regs
+stalls = args.stalls
 
 cpuType = getVectISA()
 print ("CPU type {0}".format(cpuType))
+
+# create register index functions
+if stalls:
+    destRegIndex = lambda x : (x + 2) % numRegsToUse
+    src1RegIndex = lambda x : (x + 1) % numRegsToUse
+    src2RegIndex = lambda x : x
+else:
+    destRegIndex = lambda x : x
+    src1RegIndex = lambda x : (x + 1) % numRegsToUse
+    src2RegIndex = lambda x : (x + 2) % numRegsToUse
 
 writeHeaders(cpuType)
 
@@ -114,14 +129,12 @@ elif numLoads % loadsIter is not 0:
     print ("Warning, %s loads will be split up unevenly among %s loops".format(numLoads, numChunks))
 
 print ("Generating files with the following parameters")
-print ("	Stride:               {0:6}".format(stride    ))
-print ("	Number of Elements:   {0:6}".format(numElems ))
-print ("	Loads per iteration:  {0:6}".format(loadsIter))
-print ("	Chunks:               {0:6}".format(numChunks))
-
-
-
-#print "numChunks %s numLoads %s maxLoads %s" % (numChunks, numLoads, maxLoads)
+print ("	Stride:               {0:6}".format(stride      ))
+print ("	Number of Elements:   {0:6}".format(numElems    ))
+print ("        Number of Registers   {0:6}".format(numRegsToUse))
+print ("	Loads per iteration:  {0:6}".format(loadsIter   ))
+print ("	Chunks:               {0:6}".format(numChunks   ))
+print ("        Pipeline stalls:      {0:6}".format(stalls      ))
 
 if benchType == "asm":
     regNumber = 0
@@ -131,14 +144,8 @@ if benchType == "asm":
             outfile.write('	        IACA_START\n')
         
         for index in range(0, numElems, stride):
-            #outfile.write('		dest_%s = dest_%s * testArray[%s];\n' % 
-            #              (regNumber,
-            #               (regNumber + 1) % numRegsToUse,
-            #               index))
-            #outfile.write('		asm("vmulsd %0, %%xmm{0}, %%xmm{1}"::"m" (testArray[{2}]));\n'.format( 
-            #              (regNumber + 1) % numRegsToUse, regNumber, index))
             outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format( 
-                          index * 8, (regNumber + 1) % numRegsToUse, regNumber))
+                          index * 8, src1RegIndex(regNumber), destRegIndex(regNumber)))
 
             regNumber = regNumber + 1
             if regNumber == numRegsToUse:

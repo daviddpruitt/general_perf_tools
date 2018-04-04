@@ -19,7 +19,7 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 1000000000U
+#define NUM_ITERS 100000000U
 #endif
 
 #define THOUS   1000
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
   uint64_t numLoads = (numElems / stride) * numIters;
   //printf("NUM_ELEMS/STRIDE %" PRIu64 "\n", (numElems / stride));
   //printf("sizeof(numLoads) %zu \n", sizeof(numLoads));
-  printf("Num Elems %" PRIu64 " stride %" PRIu64 " iters %" PRIu64 " loads %" PRIu64 "\n",
+  printf("Num Elems %" PRIu64 " stride %" PRIu64 " iters %" PRIu64 " ops %" PRIu64 "\n",
 	 numElems, stride, numIters, numLoads);
   uint64_t numBytes = numLoads * sizeof(uint64_t);
   struct timespec startTime;
@@ -101,8 +101,8 @@ int main(int argc, char **argv)
   fillArray(array, numElems);
 
   // cache warmup
-  //retval = runTest(1, array, numElems,
-  //		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
+  retval = runTest(1, array, numElems,
+  		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   fillArray(array, numElems);
 
 
