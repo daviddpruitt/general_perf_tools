@@ -4,12 +4,12 @@ num_elems	= 512
 num_regs	= 16
 loads_iter	= 512
 CC		= gcc
-CFLAGS		= -O3 -g -mtune=native -march=native -Wall $(DEFINES)
+CFLAGS		= -O3 -mtune=native -march=native -Wall $(DEFINES)
 
 all: memMountain random
 
 memMountain: memMountain.c randomutils.o 
-	./createAccessPattern.py -s 1 -n $(num_elems) -g $(num_regs) -l $(loads_iter) -b asm -p True -i True
+	./createAccessPattern.py -s 1 -n $(num_elems) -g $(num_regs) -l $(loads_iter) -b mem_mem #-p True #-i True
 	$(CC) $(CFLAGS) -c runTest.c	
 	$(CC) $(CFLAGS) -S runTest.c
 	$(CC) $(CFLAGS) $^ runTest.o -DNUM_ELEMS=$(num_elems) -DSTRIDE=$(stride) -DRANDOM_ACCESS=0 -o $@

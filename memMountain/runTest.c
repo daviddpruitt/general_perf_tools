@@ -3,8 +3,9 @@
 #include "runTest.h"
 #include "archSpecific.h"
 
-#define SCALING_FACTOR 0.0001
+#define SCALING_FACTOR 0.0000000000000000001
 
+uint64_t bogusArray[16];
 double
 runTest(uint64_t numIters, double *inputArray, uint64_t testArraySize,
 	uint64_t index_0, uint64_t index_1, uint64_t index_2, uint64_t index_3,
@@ -19,7 +20,7 @@ runTest(uint64_t numIters, double *inputArray, uint64_t testArraySize,
   register double dest_6 asm (FP_PREFIX"6");   register double dest_14 asm (FP_PREFIX"14"); 
   register double dest_7 asm (FP_PREFIX"7");   register double dest_15 asm (FP_PREFIX"15");
 
-  register volatile double *testArray asm(BASE_REG);
+  register double *testArray asm(BASE_REG);
   
   //double dest_1 = index_1, dest_2 = index_2, dest_3 = index_3, 
   //       dest_4 = index_4, dest_5 = index_5, dest_6 = index_6, dest_7 = index_7;
@@ -48,9 +49,17 @@ runTest(uint64_t numIters, double *inputArray, uint64_t testArraySize,
   for (iter = 0; iter < numIters; iter++) {
     #include "access.h"
   }
+
+  // hack to keep compiler from optimizing away previous loop since ops aren't used
+  // note to self need extra registers
+  inputArray[0]  = dest_0;  inputArray[1]  = dest_1;  inputArray[2]  = dest_2;  inputArray[3]  = dest_3;
+  inputArray[4]  = dest_4;  inputArray[5]  = dest_5;  inputArray[6]  = dest_6;  inputArray[7]  = dest_7;
+  inputArray[8]  = dest_8;  inputArray[9]  = dest_9;  inputArray[10] = dest_10; inputArray[11] = dest_11;
+  inputArray[12] = dest_12; inputArray[13] = dest_13; inputArray[14] = dest_14; inputArray[15] = dest_15;
+
  
-  dest_0 = dest_0 + dest_1 + dest_2 + dest_3  + dest_4  + dest_5  + dest_6  + dest_7  + testArray[0];
-  dest_0 = dest_0 + dest_8 + dest_9 + dest_10 + dest_11 + dest_12 + dest_13 + dest_14 + dest_15;
+  testArray[0] = dest_0 + dest_1 + dest_2 + dest_3  + dest_4  + dest_5  + dest_6  + dest_7;
+  testArray[0] = dest_8 + dest_9 + dest_10 + dest_11 + dest_12 + dest_13 + dest_14 + dest_15 + testArray[0];
  
-  return dest_0;
+  return testArray[0];
 }

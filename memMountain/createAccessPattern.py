@@ -72,7 +72,7 @@ argParser.add_argument("--num_regs",   "-g",
 
 argParser.add_argument("--bench",      "-b", 
                        help="The type of benchmark to run                   ", 
-                       type=str, default="ptr", choices=["ptr","asm","instr","instr-load"])
+                       type=str, default="mem_reg", choices=["reg_reg", "mem_reg", "reg_mem", "mem_mem",])
 
 argParser.add_argument("--loads_iter", "-l", 
                        help="Number of elements to load per iteration       ", 
@@ -136,80 +136,86 @@ print ("	Loads per iteration:  {0:6}".format(loadsIter   ))
 print ("	Chunks:               {0:6}".format(numChunks   ))
 print ("        Pipeline stalls:      {0:6}".format(stalls      ))
 
-if benchType == "asm":
-    regNumber = 0
-    #strided pattern
-    if randomPattern is False:
-        if enableIaca:
-            outfile.write('	        IACA_START\n')
+regNumber = 0
+#strided pattern
+if randomPattern is False:
+    if enableIaca:
+        outfile.write('	        IACA_START\n')
         
-        for index in range(0, numElems, stride):
-            outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format( 
-                          index * 8, src1RegIndex(regNumber), destRegIndex(regNumber)))
+    for index in range(0, numElems, stride):
+        # memory to memory ops
+        if benchType == "mem_mem":
+            outfile.write('		asm("vmulsd %xmm{0}, %xmm{1}, %xmm{2}");\n'.format(
+                           src1RegIndex(regNumber), src2RegIndex(regNumber), destRegIndex(regNumber)))
 
-            regNumber = regNumber + 1
-            if regNumber == numRegsToUse:
-                regNumber = 0
+        # memory to register ops
+        if benchType == "mem_reg":
+            outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format(
+                           index * 8, src1RegIndex(regNumber), destRegIndex(regNumber)))
+
+        regNumber = regNumber + 1
+        if regNumber == numRegsToUse:
+            regNumber = 0
         
-        if enableIaca:
-            outfile.write('	        IACA_END\n')
-    # Random pattern
-    else:
-        for index in range(0, numElems):
-            outfile.write('		asm("vmulsd %s(%%rsi), %%xmm%s, %%xmm%s");\n' % 
-                          (random.randint(0, numElems) * 8, (regNumber + 1), regNumber))
-            #outfile.write('		asm("movq %%0, %%%%r%s"::"g" (testArray[%s]));\n' %
-            #              (regNumber + 4, random.randint(0, numElems)))
-            regNumber = regNumber + 1
-            if regNumber == numRegsToUse:
-                regNumber = 0
+    if enableIaca:
+        outfile.write('	        IACA_END\n')
+# Random pattern
+else:
+    for index in range(0, numElems):
+        outfile.write('		asm("vmulsd %s(%%rsi), %%xmm%s, %%xmm%s");\n' % 
+                      (random.randint(0, numElems) * 8, (regNumber + 1), regNumber))
+        #outfile.write('		asm("movq %%0, %%%%r%s"::"g" (testArray[%s]));\n' %
+        #              (regNumber + 4, random.randint(0, numElems)))
+        regNumber = regNumber + 1
+        if regNumber == numRegsToUse:
+            regNumber = 0
                  
-elif benchType == "ptr":
-    indexNum = 0
-    outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks);
-    for index in range(0, loadsIter):
-        outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
-        #outfile.write('			printf("%%d \\n", index_%s);\n' % (indexNum));
-        #outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
-        #outfile.write('		asm("movq %%0, %%1":"=g" (index_%s):"g" (testArray[index_%s]));\n' % (indexNum, indexNum))
-        indexNum = indexNum + 1
-        if indexNum is numRegsToUse:
-            indexNum = 0
-    outfile.write('		}\n')
-elif benchType == "instr":
-    regNumber = 0
-    outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
-    #outfile.write('	        IACA_START\n')
+# elif benchType == "ptr":
+#     indexNum = 0
+#     outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks);
+#     for index in range(0, loadsIter):
+#         outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
+#         #outfile.write('			printf("%%d \\n", index_%s);\n' % (indexNum));
+#         #outfile.write('			index_%s = testArray[index_%s];\n' % (indexNum, indexNum));
+#         #outfile.write('		asm("movq %%0, %%1":"=g" (index_%s):"g" (testArray[index_%s]));\n' % (indexNum, indexNum))
+#         indexNum = indexNum + 1
+#         if indexNum is numRegsToUse:
+#             indexNum = 0
+#     outfile.write('		}\n')
+# elif benchType == "instr":
+#     regNumber = 0
+#     outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
+#     #outfile.write('	        IACA_START\n')
 
-    if cpuType == "avx":
-        loadsIter = loadsIter / 4
-        instr = "vaddpd"
-    if cpuType == "avx2":
-        loadsIter = loadsIter / 8
-        instr = "vfmadd231pd"
-    for index in range(0, loadsIter):
-        outfile.write('			asm("%s %%ymm%s, %%ymm%s, %%ymm%s");\n' % 
-                      (instr, 
-                       (regNumber + 1) % numRegsToUse, 
-                       (regNumber + 2) % numRegsToUse, 
-                       regNumber))
-        regNumber = regNumber + 1
+#     if cpuType == "avx":
+#         loadsIter = loadsIter / 4
+#         instr = "vaddpd"
+#     if cpuType == "avx2":
+#         loadsIter = loadsIter / 8
+#         instr = "vfmadd231pd"
+#     for index in range(0, loadsIter):
+#         outfile.write('			asm("%s %%ymm%s, %%ymm%s, %%ymm%s");\n' % 
+#                       (instr, 
+#                        (regNumber + 1) % numRegsToUse, 
+#                        (regNumber + 2) % numRegsToUse, 
+#                        regNumber))
+#         regNumber = regNumber + 1
 
-        if regNumber == numRegsToUse:
-           regNumber = 0
-    outfile.write('		}\n')
-    #outfile.write('		IACA_END\n')
-elif benchType == "instr-load":
-    regNumber = 0
-    outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
-    for index in range(0, loadsIter):
-        outfile.write('			asm("vmulsd %%xmm%s, %%xmm%s, %%xmm%s");\n' % 
-                      ((regNumber + 1) % numRegsToUse,
-                       (regNumber + 2) % numRegsToUse, 
-                       regNumber))
-        regNumber = regNumber + 1
+#         if regNumber == numRegsToUse:
+#            regNumber = 0
+#     outfile.write('		}\n')
+#     #outfile.write('		IACA_END\n')
+# elif benchType == "instr-load":
+#     regNumber = 0
+#     outfile.write('		for (chunkNum = 0; chunkNum < %s; chunkNum++) {\n' % numChunks)
+#     for index in range(0, loadsIter):
+#         outfile.write('			asm("vmulsd %%xmm%s, %%xmm%s, %%xmm%s");\n' % 
+#                       ((regNumber + 1) % numRegsToUse,
+#                        (regNumber + 2) % numRegsToUse, 
+#                        regNumber))
+#         regNumber = regNumber + 1
 
-        if regNumber == numRegsToUse:
-           regNumber = 0
-    outfile.write('		}\n')
+#         if regNumber == numRegsToUse:
+#            regNumber = 0
+#     outfile.write('		}\n')
                 
