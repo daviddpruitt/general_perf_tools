@@ -19,12 +19,14 @@
 #define LOAD_WIDTH 8
 #endif
 #ifndef NUM_ITERS
-#define NUM_ITERS 100000000U
+#define NUM_ITERS 10000000U
 #endif
 
 #define THOUS   1000
 #define MILLION 1000000
 #define BILLION 1000000000
+
+#define SCALING_FACTOR 0.00001
 
 // this is totally a hack because some compilers
 // happily ignore the long part of the number and
@@ -101,13 +103,13 @@ int main(int argc, char **argv)
   fillArray(array, numElems);
 
   // cache warmup
-  retval = runTest(1, array, numElems,
+  retval = runTest(1, array, SCALING_FACTOR, numElems,
   		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   fillArray(array, numElems);
 
 
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &startTime);
-  retval = runTest(numIters, array, numElems,
+  retval = runTest(numIters, array, SCALING_FACTOR, numElems,
   		   index_0, index_1, index_2, index_3, index_4, index_5, index_6, index_7);
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &stopTime);
 
