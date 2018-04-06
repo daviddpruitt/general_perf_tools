@@ -153,6 +153,11 @@ if randomPattern is False:
             outfile.write('		asm("vmulsd {0}(%rbx), %xmm{1}, %xmm{2}");\n'.format(
                            index * 8, src1RegIndex(regNumber), destRegIndex(regNumber)))
 
+        # register to register ops
+        if benchType == "reg_reg":
+            outfile.write('		asm("vmulsd %xmm{0}, %xmm{1}, %xmm{2}");\n'.format(
+                           numRegsToUse, src1RegIndex(regNumber), destRegIndex(regNumber)))
+
         regNumber = regNumber + 1
         if regNumber == numRegsToUse:
             regNumber = 0
