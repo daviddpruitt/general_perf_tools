@@ -34,7 +34,7 @@ runTest(uint64_t numIters, double *inputArray, double seedValue, uint64_t testAr
   dest_8  = 1 - 1.5 * seedValue; dest_9  = 1 + 1.6 * seedValue; 
   dest_10 = 1 + 1.5 * seedValue; dest_11 = 1 - 1.6 * seedValue; 
   dest_12 = 1 - 1.6 * seedValue; dest_13 = 1 + 1.7 * seedValue; 
-  dest_14 = 1 - .55 * seedValue; 
+  dest_14 = 1 - .1  * seedValue; 
 
   __asm__ __volatile__("" :: "g" (dest_0));  __asm__ __volatile__("" :: "g" (dest_1));
   __asm__ __volatile__("" :: "g" (dest_2));  __asm__ __volatile__("" :: "g" (dest_3));

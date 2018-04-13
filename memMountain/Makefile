@@ -36,9 +36,10 @@ runTest.o: runTest.c access.h
 	$(CC) $(CFLAGS) $< -c
 
 random: memMountain.c randomutils.o
-	./createAccessPattern.py -s 1 -n $(num_elems) -b asm -r random
+	./createAccessPattern.py -s 1 -n $(num_elems) -g $(num_regs) -l $(loads_iter) -b mem_reg  -r random
 	$(CC) $(CFLAGS) -c runTest.c
-	$(CC) $(CFLAGS) $^ runTest.o -DNUM_ELEMS=$(num_elems) -DSTRIDE=1 -DRANDOM_ACCESS=$(random) -o $@
+	$(CC) $(CFLAGS) -S runTest.c -o runTestRandom.s
+	$(CC) $(CFLAGS) $^ runTest.o -DNUM_ELEMS=$(num_elems) -DSTRIDE=$(stride) -DRANDOM_ACCESS=$(random) -o $@
 
 randomTest: randtest.c randomutils.o
 	$(CC) $(CFLAGS) $^ -o $@
