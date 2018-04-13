@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "iacaMarks.h"
 #include "runTest.h"
 #include "archSpecific.h"
@@ -35,7 +36,7 @@ runTest(uint64_t numIters, double *inputArray, double seedValue, uint64_t testAr
   dest_8  = 1 - 1.5 * seedValue; dest_9  = 1 + 1.6 * seedValue; 
   dest_10 = 1 + 1.5 * seedValue; dest_11 = 1 - 1.6 * seedValue; 
   dest_12 = 1 - 1.6 * seedValue; dest_13 = 1 + 1.7 * seedValue; 
-  dest_14 = 1 - .1 * seedValue; //dest_15 = 1 - 6 * seedValue;
+  dest_14 = 1 - .55 * seedValue; //dest_15 = 1 - 6 * seedValue;
 
   __asm__ __volatile__("" :: "g" (dest_0));  __asm__ __volatile__("" :: "g" (dest_1));
   __asm__ __volatile__("" :: "g" (dest_2));  __asm__ __volatile__("" :: "g" (dest_3));
@@ -56,7 +57,14 @@ runTest(uint64_t numIters, double *inputArray, double seedValue, uint64_t testAr
   asm("movq %0, %%rbx"::"g" (inputArray));
   for (iter = 0; iter < numIters; iter++) {
     #include "access.h"
-    //if (dest_0 == 0.0 && printed == 0) {printf("hit 0 iter %lu\n", iter); printed = 1;}
+    /*if (iter % 100000 == 0) {printf("dest_0 %g dest_1 %g dest_2 %g dest_3 %g "
+			      "dest_4 %g dest_5 %g dest_6 %g dest_7 %g "
+			      "dest_8 %g dest_9 %g dest_10 %g dest_11 %g "
+			      "dest_12 %g dest_13 %g dest_14 %g iter %lu\n", 
+			      dest_0, dest_1, dest_2, dest_3, dest_4,
+			      dest_5, dest_6, dest_7, dest_8, dest_9,
+			      dest_10, dest_11, dest_12, dest_13, dest_14, iter);
+			      printf("%lu %lu\n", iter, time(NULL));fflush(stdout);}*/
   }
 
   // hack to keep compiler from optimizing away previous loop since ops aren't used
