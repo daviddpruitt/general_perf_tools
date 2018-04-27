@@ -26,6 +26,9 @@
 #define MILLION 1000000
 #define BILLION 1000000000
 
+#define True    1
+#define False   0
+
 #define SCALING_FACTOR 0.00001
 
 // this is totally a hack because some compilers
