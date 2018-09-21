@@ -40,18 +40,6 @@ uint64_t numIters = NUM_ITERS;
 uint64_t loadWidth = LOAD_WIDTH;
 uint64_t randomAccess = RANDOM_ACCESS;
 
-void fillArray(double *array, uint64_t numElems)
-{
-  uint64_t index;
-  for (index = 0; index < numElems; index++) {
-    if (randomAccess) {
-      array[index] = getRand(0, numElems);
-    } else {
-      array[index] = 1.00; //(index + loadWidth * stride) % numElems;
-    }
-  }
-}
-
 // from http://www.gnu.org/software/libc/manual/html_node/Elapsed-Time.html
 /* Subtract the struct timespec values X and Y,
    storing the result in RESULT.
